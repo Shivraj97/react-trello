@@ -1,24 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
+// Components
+import CardList from './components/CardList';
+// Stylesheets
 import './App.css';
+
+const data = [
+  {
+    id: 0,
+    description: 'This is my first card...'
+  },
+  {
+    id: 1,
+    description: 'This is a test'
+  }
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CardList cards={data} />
     </div>
   );
 }
