@@ -9,7 +9,10 @@ class Board extends Component {
           {
             this.props.lists.map(list => (
               <li key={list.id}>
-                <CardList cards={list.cards} />
+                <CardList 
+                  title={list.title}
+                  cards={list.cards} 
+                />
               </li>
             ))
           }

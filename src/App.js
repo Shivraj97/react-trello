@@ -7,6 +7,7 @@ import './App.css';
 const data = [
   {
     id: 0,
+    title: 'Product Backlog',
     cards: [
       { id: 0, description: 'This is my first card...' },
       { id: 1, description: 'This is a test' }
@@ -14,8 +15,17 @@ const data = [
   },
   {
     id: 1,
+    title: 'Work In Progress',
     cards: [
       { id: 0, description: 'A card for my second list' },
+      { id: 1, description: 'Another one!' }
+    ]
+  },
+  {
+    id: 2,
+    title: 'Done',
+    cards: [
+      { id: 0, description: 'A card for my third list' },
       { id: 1, description: 'Another one!' }
     ]
   },
