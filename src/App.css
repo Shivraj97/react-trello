@@ -7,6 +7,17 @@ p {
   margin: 0;
 }
 
+.header {
+  background: rgba(0,0,0,.15);
+  text-align: center;
+  padding: 10px;
+}
+.header h1 {
+  margin: 0;
+  color: #fff;
+  font-style: italic;
+}
+
 .board {
   padding: 10px;
 }
