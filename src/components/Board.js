@@ -125,7 +125,6 @@ class Board extends Component {
           id: this.state.nextIndex,
           description: 'New card'
         });
-        console.log(this.state.nextIndex);
         this.setState({ lists, nextIndex: this.state.nextIndex + 1 });
         return;
       }
