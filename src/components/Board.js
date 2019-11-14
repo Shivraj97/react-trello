@@ -90,6 +90,9 @@ class Board extends Component {
     this.state = {
       lists: []
     };
+
+    this.handleAddCard = this.handleAddCard.bind(this);
+    this.handleAddList = this.handleAddList.bind(this);
   }
 
   componentWillMount() {
@@ -106,6 +109,19 @@ class Board extends Component {
     this.setState({ lists });
   }
 
+  handleAddCard(id) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === id) {
+        lists[i].cards.push({
+          id: lists[i].cards.length,
+          description: 'New card'
+        });
+      }
+    }
+    this.setState({ lists });
+  }
+
   render() {
     return (
       <div className="board">
@@ -114,8 +130,8 @@ class Board extends Component {
             this.state.lists.map(list => (
               <li key={list.id}>
                 <CardList 
-                  title={list.title}
-                  cards={list.cards} 
+                  data={list}
+                  onAddCard={this.handleAddCard}
                 />
               </li>
             ))
@@ -123,7 +139,7 @@ class Board extends Component {
           <li>
             <button 
               className="board-button"
-              onClick={this.handleAddList.bind(this)}
+              onClick={this.handleAddList}
             >
               + Add a list
             </button>

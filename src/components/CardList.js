@@ -3,27 +3,31 @@ import Card from './Card';
 
 class CardList extends Component {
   render() {
+    const data = this.props.data;
     return (
-    <div className="cardlist">
-      <h3 className="cardlist-title">
-        {this.props.title}
-      </h3>
-      <p className="cardlist-subtitle">
-        {this.props.cards.length} cards
-      </p>
-      <ol className="cardlist-cards">
-        {
-          this.props.cards.map(card => (
-            <li key={card.id}>
-              <Card description={card.description} />
-            </li>
-          ))
-        }
-      </ol>
-      <button className="cardlist-button">
-        + Add a card
-      </button>
-    </div>
+      <div className="cardlist">
+        <h3 className="cardlist-title">
+          {data.title}
+        </h3>
+        <p className="cardlist-subtitle">
+          {data.cards.length} cards
+        </p>
+        <ol className="cardlist-cards">
+          {
+            data.cards.map(card => (
+              <li key={card.id}>
+                <Card description={card.description} />
+              </li>
+            ))
+          }
+        </ol>
+        <button 
+          className="cardlist-button"
+          onClick={() => this.props.onAddCard(data.id)}
+        >
+          + Add a card
+        </button>
+      </div>
     );
   }
 };
