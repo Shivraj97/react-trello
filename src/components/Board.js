@@ -16,6 +16,11 @@ class Board extends Component {
               </li>
             ))
           }
+          <li>
+            <button className="board-button">
+              + Add a list
+            </button>
+          </li>
         </ol>
       </div>
     );
