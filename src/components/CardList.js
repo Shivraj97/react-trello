@@ -15,7 +15,10 @@ class CardList extends Component {
         <ol className="cardlist-cards">
           {
             data.cards.map(card => (
-              <li key={card.id}>
+              <li 
+                key={card.id}
+                onClick={() => this.props.onRemoveCard(data.id, card.id)}
+              >
                 <Card description={card.description} />
               </li>
             ))

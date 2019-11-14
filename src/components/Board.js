@@ -88,15 +88,23 @@ class Board extends Component {
     super(props);
 
     this.state = {
-      lists: []
+      lists: [],
+      nextIndex: -1,
     };
 
     this.handleAddCard = this.handleAddCard.bind(this);
+    this.handleRemoveCard = this.handleRemoveCard.bind(this);
     this.handleAddList = this.handleAddList.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ lists: data });
+    // Compute next index
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+      sum += data[i].cards.length;
+    }
+    // Init state with data
+    this.setState({ lists: data, nextIndex: sum + 1 });
   }
 
   handleAddList() {
@@ -109,17 +117,38 @@ class Board extends Component {
     this.setState({ lists });
   }
 
-  handleAddCard(id) {
+  handleAddCard(listId) {
     let lists = [...this.state.lists];
     for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === id) {
+      if (lists[i].id === listId) {
         lists[i].cards.push({
-          id: lists[i].cards.length,
+          id: this.state.nextIndex,
           description: 'New card'
         });
+        console.log(this.state.nextIndex);
+        this.setState({ lists, nextIndex: this.state.nextIndex + 1 });
+        return;
       }
     }
-    this.setState({ lists });
+  }
+
+  handleRemoveCard(listId, cardId) {
+    let lists = [...this.state.lists];
+    let index = -1;
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        for (let j = 0; j < lists[i].cards.length; j++) {
+          if (lists[i].cards[j].id === cardId) {
+            index = j;
+          }
+        }
+        if (index !== -1) {
+          lists[i].cards.splice(index, 1);
+          this.setState({ lists });
+          return;
+        }
+      }
+    }
   }
 
   render() {
@@ -132,6 +161,7 @@ class Board extends Component {
                 <CardList 
                   data={list}
                   onAddCard={this.handleAddCard}
+                  onRemoveCard={this.handleRemoveCard}
                 />
               </li>
             ))
