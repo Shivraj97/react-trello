@@ -89,12 +89,14 @@ class Board extends Component {
 
     this.state = {
       lists: [],
-      nextIndex: -1,
+      nextCardIndex: -1,
+      nextListIndex: -1
     };
 
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleRemoveCard = this.handleRemoveCard.bind(this);
     this.handleAddList = this.handleAddList.bind(this);
+    this.handleRemoveList = this.handleRemoveList.bind(this);
   }
 
   componentWillMount() {
@@ -104,17 +106,32 @@ class Board extends Component {
       sum += data[i].cards.length;
     }
     // Init state with data
-    this.setState({ lists: data, nextIndex: sum + 1 });
+    this.setState({ 
+      lists: data, 
+      nextCardIndex: sum + 1,
+      nextListIndex: data.length + 1
+    });
   }
 
   handleAddList() {
     let lists = [...this.state.lists];
     lists.push({
-      id: lists.length,
+      id: this.state.nextListIndex,
       title: 'New list',
       cards: []
     });
-    this.setState({ lists });
+    this.setState({ lists, nextListIndex: this.state.nextListIndex + 1 });
+  }
+
+  handleRemoveList(listId) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        lists.splice(i, 1);
+        this.setState({ lists });
+        return;
+      }
+    }
   }
 
   handleAddCard(listId) {
@@ -122,10 +139,10 @@ class Board extends Component {
     for (let i = 0; i < lists.length; i++) {
       if (lists[i].id === listId) {
         lists[i].cards.push({
-          id: this.state.nextIndex,
+          id: this.state.nextCardIndex,
           description: 'New card'
         });
-        this.setState({ lists, nextIndex: this.state.nextIndex + 1 });
+        this.setState({ lists, nextCardIndex: this.state.nextCardIndex + 1 });
         return;
       }
     }
@@ -133,18 +150,14 @@ class Board extends Component {
 
   handleRemoveCard(listId, cardId) {
     let lists = [...this.state.lists];
-    let index = -1;
     for (let i = 0; i < lists.length; i++) {
       if (lists[i].id === listId) {
         for (let j = 0; j < lists[i].cards.length; j++) {
           if (lists[i].cards[j].id === cardId) {
-            index = j;
+            lists[i].cards.splice(j, 1);
+            this.setState({ lists });
+            return;
           }
-        }
-        if (index !== -1) {
-          lists[i].cards.splice(index, 1);
-          this.setState({ lists });
-          return;
         }
       }
     }
@@ -161,6 +174,7 @@ class Board extends Component {
                   data={list}
                   onAddCard={this.handleAddCard}
                   onRemoveCard={this.handleRemoveCard}
+                  onRemoveList={this.handleRemoveList}
                 />
               </li>
             ))

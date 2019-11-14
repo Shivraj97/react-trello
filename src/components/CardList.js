@@ -6,7 +6,10 @@ class CardList extends Component {
     const data = this.props.data;
     return (
       <div className="cardlist">
-        <h3 className="cardlist-title">
+        <h3 
+          className="cardlist-title"
+          onClick={() => this.props.onRemoveList(data.id)}
+        >
           {data.title}
         </h3>
         <p className="cardlist-subtitle">
