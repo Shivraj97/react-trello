@@ -97,15 +97,18 @@ p {
   margin-right: 5px;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 11px;
+.tags {
+  margin-bottom: 5px;
 }
-::-webkit-scrollbar-track {
-  background: rgba(9,30,66,.08);
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(9,30,66,.2);
+
+.tag {
+  display: inline-block;
+  background-color: #ff9f1a;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 2px 8px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   border-radius: 5px;
 }

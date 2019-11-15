@@ -22,7 +22,10 @@ class CardList extends Component {
                 key={card.id}
                 onClick={() => this.props.onRemoveCard(data.id, card.id)}
               >
-                <Card description={card.description} />
+                <Card 
+                  tags={card.tags}
+                  description={card.description} 
+                />
               </li>
             ))
           }
