@@ -8,7 +8,7 @@ const data = [
     cards: [
       { id: 0, description: 'This is my first card...', tags: ['Priority: Low', 'Front-end'] },
       { id: 1, description: 'This is a test', tags: ['Priority: Low'] },
-      { id: 2, description: 'This is a test', tags: [] },
+      { id: 2, description: 'This is a test', tags: null },
     ]
   },
   {
@@ -24,7 +24,7 @@ const data = [
     title: 'Done',
     cards: [
       { id: 0, description: 'A card for my third list', tags: ['Priority: High', 'Payment', 'API'] },
-      { id: 1, description: 'Another one!', tags: [] }
+      { id: 1, description: 'Another one!', tags: null }
     ]
   },
 ];

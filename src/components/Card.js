@@ -7,7 +7,7 @@ class Card extends Component {
       <div className="card">
         <div className="tags">
         {
-          this.props.tags.map(tag => (
+          this.props.tags && this.props.tags.map(tag => (
             <Tag text={tag} />
           ))
         }
