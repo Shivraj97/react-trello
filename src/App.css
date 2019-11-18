@@ -84,6 +84,49 @@ p {
   cursor: pointer;
   margin: 10px;
 }
+.cardlist-cards-container {
+  overflow: hidden;
+}
+.cardlist-newcard {
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  margin-bottom: 8px;
+  min-height: 50px;
+  max-height: 200px;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  resize: none;
+  width: 100%;
+}
+.cardlist-newcard:focus,
+.cardlist-button-addcard:focus {
+  outline: none;
+}
+.cardlist-button-addcard {
+  background-color: #5aac44;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  padding: 8px 16px;
+  text-align: center;
+  width: fit-content;
+}
+.cardlist-button-cancel {
+  padding: 0px 5px;
+  font-size: 20px;
+  display: inline-block;
+  cursor: pointer;
+  color: #5e6c84;
+}
 
 .card {
   background-color: #fff;
@@ -92,7 +135,7 @@ p {
   cursor: pointer;
   margin-bottom: 8px;
   min-height: 20px;
-  max-height: 250px;
+  max-height: 200px;
   padding: 10px;
   margin-right: 5px;
 }

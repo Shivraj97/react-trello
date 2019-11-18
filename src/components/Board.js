@@ -80,13 +80,13 @@ class Board extends Component {
     }
   }
 
-  handleAddCard(listId) {
+  handleAddCard(listId, text) {
     let lists = [...this.state.lists];
     for (let i = 0; i < lists.length; i++) {
       if (lists[i].id === listId) {
         lists[i].cards.push({
           id: this.state.nextCardIndex,
-          description: 'New card'
+          description: text
         });
         this.setState({ lists, nextCardIndex: this.state.nextCardIndex + 1 });
         return;
