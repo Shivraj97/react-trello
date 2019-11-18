@@ -90,7 +90,8 @@ p {
 }
 .cardlist-newcard:focus,
 .cardlist-button-addcard:focus,
-.cardlist-button-newcard:focus {
+.cardlist-button-newcard:focus,
+.cardlist-newlist:focus {
   outline: none;
 }
 .cardlist-button-addcard {
@@ -122,6 +123,23 @@ p {
   cursor: pointer;
   margin: 10px 0;
   font-weight: 500;
+}
+.cardlist-newlist-container {
+  padding: 10px;
+  background-color: #ebecf0;
+  border-radius: 3px;
+  width: 275px;
+}
+.cardlist-newlist {
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  overflow: hidden;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .card {
