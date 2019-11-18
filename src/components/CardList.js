@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaTimes, FaPlus } from 'react-icons/fa';
 import Card from './Card';
 
 class CardList extends Component {
@@ -54,6 +55,7 @@ class CardList extends Component {
               onClick={() => this.props.onRemoveCard(data.id, card.id)}
             >
               <Card 
+                id={card.id}
                 tags={card.tags}
                 description={card.description} 
               />
@@ -69,8 +71,7 @@ class CardList extends Component {
               value={this.state.newCardText} 
               placeholder="Enter a title for this card..."
               onChange={(e) => this.setState({ newCardText: e.target.value })} 
-            >
-            </textarea>
+            />
           </li>
         }
       </ol>
@@ -87,29 +88,26 @@ class CardList extends Component {
             value="Add Card"
             onClick={(e) => this.addNewCard(e)}
           />
-          <span 
+          <FaTimes 
             className="cardlist-button-cancel"
             onClick={this.cancelNewCard}
-          >
-              X
-          </span>
+          />
         </div>      
       );
     }
     else {
       return (
         <button 
-          className="cardlist-button"
+          className="cardlist-button-newcard"
           onClick={() => this.setState({ creatingNewCard: true })}
         >
-          + Add a card
+          <FaPlus /> Add a card
         </button>          
       );
     }
   }
 
   render() {
-    
     return (
       <div className="cardlist">
         { this.renderHeader() }

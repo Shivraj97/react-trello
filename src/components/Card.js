@@ -19,7 +19,7 @@ class Card extends Component {
     return (
       <div className="card">
         { tags }
-        <p className="card-description">{this.props.description}</p>
+        <p className="card-description">{'#' + this.props.id + ' ' + this.props.description}</p>
       </div>
     );
   }

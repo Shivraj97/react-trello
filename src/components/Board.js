@@ -6,25 +6,25 @@ const data = [
     id: 0,
     title: 'Product Backlog',
     cards: [
-      { id: 0, description: 'This is my first card...', tags: ['Priority: Low', 'Front-end'] },
-      { id: 1, description: 'This is a test', tags: ['Priority: Low'] },
-      { id: 2, description: 'This is a test', tags: null },
+      { id: 1, description: 'This is my first card...', tags: ['Priority: Low', 'Front-end'] },
+      { id: 2, description: 'This is a test', tags: ['Priority: Low'] },
+      { id: 3, description: 'This is a test', tags: null },
     ]
   },
   {
     id: 1,
     title: 'Work In Progress',
     cards: [
-      { id: 0, description: 'A card for my second list', tags: ['Priority: Low', 'Front-end'] },
-      { id: 1, description: 'Another one!', tags: ['Priority: Medium', 'API', 'Database'] }
+      { id: 4, description: 'A card for my second list', tags: ['Priority: Low', 'Front-end'] },
+      { id: 5, description: 'Another one!', tags: ['Priority: Medium', 'API', 'Database'] }
     ]
   },
   {
     id: 2,
     title: 'Done',
     cards: [
-      { id: 0, description: 'A card for my third list', tags: ['Priority: High', 'Payment', 'API'] },
-      { id: 1, description: 'Another one!', tags: null }
+      { id: 6, description: 'A card for my third list', tags: ['Priority: High', 'Payment', 'API'] },
+      { id: 7, description: 'Another one!', tags: null }
     ]
   },
 ];
