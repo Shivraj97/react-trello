@@ -87,11 +87,11 @@ p {
   border: none;
   overflow: hidden;
   resize: none;
+  width: 250px;
+  outline: none;
 }
 .cardlist-newcard:focus,
-.cardlist-button-addcard:focus,
-.cardlist-button-newcard:focus,
-.cardlist-newlist:focus {
+.cardlist-button-addcard:focus {
   outline: none;
 }
 .cardlist-button-addcard {
@@ -107,6 +107,7 @@ p {
   padding: 8px 16px;
   text-align: center;
   width: fit-content;
+  outline: none;
 }
 .cardlist-button-cancel {
   font-size: 24px;
@@ -138,8 +139,11 @@ p {
   border: none;
   box-shadow: inset 0 0 0 2px #0079bf;
   overflow: hidden;
+  overflow-y: scroll;
   display: block;
   margin-bottom: 5px;
+  width: 250px;
+  outline: none;
 }
 
 .card {
