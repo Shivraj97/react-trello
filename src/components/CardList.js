@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 import Card from './Card';
+import Menu from './Menu';
 
 class CardList extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class CardList extends Component {
 
     this.state = {
       newCardText: '',
-      creatingNewCard: false,
+      creatingNewCard: false
     };
 
     this.addNewCard = this.addNewCard.bind(this);
@@ -31,12 +32,18 @@ class CardList extends Component {
     const data = this.props.data;
     return (
       <div className="cardlist-header">
-        <h3 
-          className="cardlist-title"
-          onClick={() => this.props.onRemoveList(data.id)}
-        >
-          {data.title}
-        </h3>
+        <div className="cardlist-title-container">
+          <h3 
+            className="cardlist-title"
+            onClick={() => this.props.onRemoveList(data.id)}
+          >
+            {data.title}
+          </h3>
+          <Menu 
+            isOpen={this.props.isMenuOpen} 
+            onClick={() => this.props.onToggleMenu(data.id)}
+          />
+        </div>
         <p className="cardlist-subtitle">
           {data.cards.length} cards
         </p>

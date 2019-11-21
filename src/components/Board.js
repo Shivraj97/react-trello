@@ -40,6 +40,7 @@ class Board extends Component {
       nextListIndex: -1,
       newListText: '',
       creatingNewList: false,
+      openMenuId: null,
     };
 
     this.handleAddCard = this.handleAddCard.bind(this);
@@ -47,6 +48,7 @@ class Board extends Component {
     this.handleAddList = this.handleAddList.bind(this);
     this.handleRemoveList = this.handleRemoveList.bind(this);
     this.renderLists = this.renderLists.bind(this);
+    this.handleToggleMenu = this.handleToggleMenu.bind(this);
   }
 
   componentWillMount() {
@@ -120,6 +122,15 @@ class Board extends Component {
     }
   }
 
+  handleToggleMenu(listId) {
+    if (this.state.openMenuId === listId) {
+      this.setState({ openMenuId: null });
+    }
+    else {
+      this.setState({ openMenuId: listId });
+    }
+  }
+
   renderLists() {
     let lists = [];
     for (let i = 0; i < this.state.lists.length; i++) {
@@ -127,6 +138,8 @@ class Board extends Component {
         <li key={this.state.lists[i].id}>
           <CardList 
             data={this.state.lists[i]}
+            isMenuOpen={this.state.openMenuId === this.state.lists[i].id}
+            onToggleMenu={this.handleToggleMenu}
             onAddCard={this.handleAddCard}
             onRemoveCard={this.handleRemoveCard}
             onRemoveList={this.handleRemoveList}
