@@ -12,6 +12,38 @@ class CardList extends Component {
       creatingNewCard: false
     };
 
+    this.actions = [
+      [
+        { 
+          title: 'Add Card...',
+          onClick: () => {
+            this.props.onToggleMenu(this.props.data.id);
+            this.setState({ creatingNewCard: true });
+          }
+        },
+        { 
+          title: 'Copy List...',
+          onClick: () => this.props.onCopyList(this.props.data.id)
+        }
+      ],
+      [
+        {
+          title: 'Move All Cards in This List...',
+          onClick: () => this.props.onMoveAllCards(this.props.data.id)
+        },
+        {
+          title: 'Archive All Cards in This List...',
+          onClick: () => this.props.onRemoveAllCards(this.props.data.id)
+        },
+      ],
+      [
+        {
+          title: 'Archive This List',
+          onClick: () => this.props.onRemoveList(this.props.data.id)
+        }
+      ]
+    ];
+
     this.addNewCard = this.addNewCard.bind(this);
     this.cancelNewCard = this.cancelNewCard.bind(this);
   }
@@ -33,15 +65,11 @@ class CardList extends Component {
     return (
       <div className="cardlist-header">
         <div className="cardlist-title-container">
-          <h3 
-            className="cardlist-title"
-            onClick={() => this.props.onRemoveList(data.id)}
-          >
-            {data.title}
-          </h3>
-          <Menu 
+          <h3 className="cardlist-title">{data.title}</h3>
+          <Menu
             isOpen={this.props.isMenuOpen} 
             onClick={() => this.props.onToggleMenu(data.id)}
+            actions={this.actions}
           />
         </div>
         <p className="cardlist-subtitle">

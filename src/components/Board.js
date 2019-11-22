@@ -47,7 +47,10 @@ class Board extends Component {
     this.handleRemoveCard = this.handleRemoveCard.bind(this);
     this.handleAddList = this.handleAddList.bind(this);
     this.handleRemoveList = this.handleRemoveList.bind(this);
+    this.handleRemoveAllCards = this.handleRemoveAllCards.bind(this);
+    this.handleCopyList = this.handleCopyList.bind(this);
     this.renderLists = this.renderLists.bind(this);
+    this.handleMoveAllCards = this.handleMoveAllCards.bind(this);
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
   }
 
@@ -122,6 +125,54 @@ class Board extends Component {
     }
   }
 
+  handleRemoveAllCards(listId) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        lists[i].cards = [];
+        this.setState({ lists, openMenuId: null });
+        return;
+      }
+    }
+  }
+
+  handleCopyList(listId) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        lists.push({
+          id: this.state.nextListIndex,
+          title: '(Copy) - ' + lists[i].title,
+          cards: lists[i].cards
+        });
+        this.setState({ 
+          lists, 
+          nextListIndex: this.state.nextListIndex + 1,
+          openMenuId: null
+        });
+        return;
+      }
+    }
+  }
+
+  handleMoveAllCards(listId) {
+    let lists = [...this.state.lists];
+    let cards = [];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id !== listId) {
+        cards.push(...lists[i].cards);
+        lists[i].cards = [];
+      }
+    }
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        lists[i].cards.push(...cards);
+        this.setState({ lists, openMenuId: null });
+        return;
+      }
+    }
+  }
+
   handleToggleMenu(listId) {
     if (this.state.openMenuId === listId) {
       this.setState({ openMenuId: null });
@@ -143,6 +194,9 @@ class Board extends Component {
             onAddCard={this.handleAddCard}
             onRemoveCard={this.handleRemoveCard}
             onRemoveList={this.handleRemoveList}
+            onRemoveAllCards={this.handleRemoveAllCards}
+            onCopyList={this.handleCopyList}
+            onMoveAllCards={this.handleMoveAllCards}
           />
         </li>
       );
