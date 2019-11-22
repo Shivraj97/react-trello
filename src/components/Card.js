@@ -8,8 +8,8 @@ class Card extends Component {
       tags = (
         <div className="tags">
         {
-          this.props.tags.map(tag => (
-            <Tag text={tag} />
+          this.props.tags.map((tag, i) => (
+            <Tag key={i} text={tag} />
           ))
         }
         </div>
