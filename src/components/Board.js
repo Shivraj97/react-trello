@@ -70,19 +70,26 @@ class Board extends Component {
 
   handleAddList(e) {
     e.preventDefault();
-
-    let lists = [...this.state.lists];
-    lists.push({
-      id: this.state.nextListIndex,
-      title: this.state.newListText,
-      cards: []
-    });
-    this.setState({ 
-      lists, 
-      nextListIndex: this.state.nextListIndex + 1,
-      newListText: '',
-      creatingNewList: false,
-    });
+    if (this.state.newListText) {
+      let lists = [...this.state.lists];
+      lists.push({
+        id: this.state.nextListIndex,
+        title: this.state.newListText,
+        cards: []
+      });
+      this.setState({ 
+        lists, 
+        nextListIndex: this.state.nextListIndex + 1,
+        newListText: '',
+        creatingNewList: false,
+      });
+    }
+    else {
+      this.setState({
+        newListText: '',
+        creatingNewList: false,
+      });
+    }
   }
 
   handleRemoveList(listId) {
@@ -235,7 +242,8 @@ class Board extends Component {
           className="board-button"
           onClick={() => this.setState({ creatingNewList: true })}
         >
-          <FaPlus /> Add a list
+          <FaPlus /> 
+          { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
         </button>
       );
     }
