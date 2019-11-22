@@ -50,6 +50,9 @@ p {
   text-align: left;
   height: fit-content;
 }
+.board-button:hover {
+  background-color: hsla(0,0%,100%,.32);
+}
 
 .cardlist {
   background-color: #ebecf0;
@@ -97,8 +100,12 @@ p {
   outline: none;
 }
 .cardlist-newcard:focus,
+.cardlist-button-newcard:focus,
 .cardlist-button-addcard:focus {
   outline: none;
+}
+.cardlist-button-addcard:hover {
+  background-color: #61bd4f;
 }
 .cardlist-button-addcard {
   background-color: #5aac44;
@@ -128,7 +135,8 @@ p {
   font-size: 14px;
   color: #5e6c84;
   cursor: pointer;
-  margin: 10px 0;
+  padding: 10px 10px;
+  margin: 0 -10px;
   font-weight: 500;
 }
 .cardlist-button-newcard:hover {

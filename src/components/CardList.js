@@ -44,8 +44,27 @@ class CardList extends Component {
       ]
     ];
 
+    this.newCard = React.createRef();
+
     this.addNewCard = this.addNewCard.bind(this);
     this.cancelNewCard = this.cancelNewCard.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+
+  }
+
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClick, false);
+  }
+
+  handleClick(e) {
+    if (this.newCard && this.newCard.current && this.newCard.current.contains(e.target)) {
+      return;
+    }
+    this.setState({ newCardText: '', creatingNewCard: false });
   }
 
   addNewCard(e) {
@@ -99,7 +118,7 @@ class CardList extends Component {
         }
         {
           this.state.creatingNewCard &&
-          <li>
+          <li ref={this.newCard}>
             <textarea 
               className="cardlist-newcard"
               type="text" 
@@ -136,7 +155,8 @@ class CardList extends Component {
           className="cardlist-button-newcard"
           onClick={() => this.setState({ creatingNewCard: true })}
         >
-          <FaPlus /> Add a card
+          <FaPlus />
+          { this.props.data.cards.length === 0 ? "Add a card" : "Add another card" }
         </button>          
       );
     }
