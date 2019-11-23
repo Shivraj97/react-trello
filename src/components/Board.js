@@ -55,6 +55,8 @@ const ListsContainer = styled.ol`
 `;
 
 const NewList = styled.button`
+  display: flex;
+  flex-direction: row;
   border-radius: 3px;
   border-color: transparent;
   width: 275px;
@@ -70,6 +72,17 @@ const NewList = styled.button`
   &:hover { 
     background-color: hsla(0,0%,100%,.32);
   }
+`;
+
+const NewListText = styled.p`
+  margin: 0;
+  line-height: 25px;
+`;
+
+const AddIconStyled = styled(AddIcon)`
+  margin-right: 2px;
+  font-size: 25px;
+  vertical-align: middle;
 `;
 
 class Board extends Component {
@@ -266,8 +279,12 @@ class Board extends Component {
         </li>
       : <li>
         <NewList onClick={() => this.setState({ creatingNewList: true })}>
-          <AddIcon /> 
-          { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
+          <AddIconStyled /> 
+          { 
+            this.state.lists.length === 0 
+            ? <NewListText>Add a list</NewListText> 
+            : <NewListText>Add another list</NewListText>
+          }
         </NewList>
       </li>
     );
