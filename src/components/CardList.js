@@ -18,6 +18,8 @@ const CardListContainer = styled.div`
 `;
 
 const CardListFooter = styled.button`
+  display: flex;
+  flex-direction: row;
   background-color: transparent;
   border: none;
   text-align: left;
@@ -36,6 +38,17 @@ const CardListFooter = styled.button`
     color: #172b4d;
     text-decoration: underline;
   }
+`;
+
+const CardListFooterText = styled.p`
+  margin: 0;
+  line-height: 25px;
+`;
+
+const AddIconStyled = styled(AddIcon)`
+  margin-right: 2px;
+  font-size: 25px;
+  vertical-align: middle;
 `;
 
 const CardsContainer = styled.ol`
@@ -171,8 +184,12 @@ class CardList extends Component {
           onClickCancel={this.handleCancelNewCard}
         />
       : <CardListFooter onClick={this.handleCreateNewCard}>
-          <AddIcon />
-          { this.props.data.cards.length === 0 ? "Add a card" : "Add another card" }
+          <AddIconStyled />
+          { 
+            this.props.data.cards.length === 0 
+            ? <CardListFooterText>Add a card</CardListFooterText> 
+            : <CardListFooterText>Add another card</CardListFooterText> 
+          }
         </CardListFooter>  
     );
   }
