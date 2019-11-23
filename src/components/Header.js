@@ -1,13 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 
-class Header extends Component {
-  render() {
-    return (
-      <header className="header">
-        <h1>React Trello</h1>
-      </header>
-    );
-  }
+const HeaderContainer = styled.header`
+  background: rgba(0,0,0,.15);
+  text-align: center;
+  height: 55px;
+`;
+
+const HeaderTitle = styled.h1`
+  margin: 0;
+  line-height: 55px;
+  color: #fff;
+  font-style: italic;
+`;
+
+const Header = () => {
+  return (
+    <HeaderContainer>
+      <HeaderTitle>React Trello</HeaderTitle>
+    </HeaderContainer>
+  );
 };
 
 export default Header;
