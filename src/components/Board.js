@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { FaTimes, FaPlus } from 'react-icons/fa';
+import styled from 'styled-components';
+import { FaPlus } from 'react-icons/fa';
 import CardList from './CardList';
+import Form from './Form';
+
 
 const data = [
   {
@@ -9,7 +12,7 @@ const data = [
     cards: [
       { id: 1, description: 'This is my first card...', tags: ['Priority: Low', 'Front-end'] },
       { id: 2, description: 'This is a test', tags: ['Priority: Low'] },
-      { id: 3, description: 'This is a test', tags: null },
+      { id: 3, description: 'This is a test', tags: [] },
     ]
   },
   {
@@ -25,10 +28,29 @@ const data = [
     title: 'Done',
     cards: [
       { id: 6, description: 'A card for my third list', tags: ['Priority: High', 'Payment', 'API'] },
-      { id: 7, description: 'Another one!', tags: null }
+      { id: 7, description: 'Another one!', tags: [] }
     ]
   },
 ];
+
+const BoardContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 75px 10px 10px 10px;
+`;
+
+const ListsContainer = styled.ol`
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  overflow-y: hidden;
+  overflow-x: auto;
+`;
 
 class Board extends Component {
   constructor(props) {
@@ -68,13 +90,12 @@ class Board extends Component {
     });
   }
 
-  handleAddList(e) {
-    e.preventDefault();
+  handleAddList(listTitle) {
     if (this.state.newListText) {
       let lists = [...this.state.lists];
       lists.push({
         id: this.state.nextListIndex,
-        title: this.state.newListText,
+        title: listTitle,
         cards: []
       });
       this.setState({ 
@@ -212,52 +233,42 @@ class Board extends Component {
   }
 
   renderNewList() {
-    let content = null;
     if (this.state.creatingNewList) {
-      content = (
-        <div className="cardlist-newlist-container">
-          <input 
-            className="cardlist-newlist"
-            type="text" 
-            value={this.state.newListText} 
+      return (
+        <li>
+          <Form
+            type="list"
             placeholder="Enter a title for this list..."
-            onChange={(e) => this.setState({ newListText: e.target.value })} 
+            buttonText="Add List"
+            onClickSubmit={this.handleAddList}
+            onClickCancel={() => this.setState({ creatingNewList: false })}
           />
-          <input 
-            className="cardlist-button-addcard"
-            type="submit"
-            value="Add List"
-            onClick={(e) => this.handleAddList(e)}
-          />
-          <FaTimes 
-            className="cardlist-button-cancel"
-            onClick={() => this.setState({ newListText: '', creatingNewList: false })}
-          />
-        </div>
+        </li>
       );
     }
     else {
-      content = (
-        <button 
-          className="board-button"
-          onClick={() => this.setState({ creatingNewList: true })}
-        >
-          <FaPlus /> 
-          { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
-        </button>
+      return (
+        <li>
+          <button 
+            className="board-button"
+            onClick={() => this.setState({ creatingNewList: true })}
+          >
+            <FaPlus /> 
+            { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
+          </button>
+        </li>
       );
     }
-    return <li>{ content }</li>
   }
 
   render() {
     return (
-      <div className="board">
-        <ol className="board-lists">
+      <BoardContainer>
+        <ListsContainer>
           { this.renderLists() }
           { this.renderNewList() }
-        </ol>
-      </div>
+        </ListsContainer>
+      </BoardContainer>
     );
   }
 };

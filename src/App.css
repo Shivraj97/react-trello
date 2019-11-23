@@ -24,50 +24,8 @@ p {
   background-color: hsla(0,0%,100%,.32);
 }
 
-.cardlist {
-  background-color: #ebecf0;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: column;
-  width: 275px;
-  margin-right: 10px;
-  max-height: 100%;
-  padding-right: 10px;
-  padding-left: 10px;
-}
 .cardlist-cards {
   overflow: auto;
-}
-.cardlist-title-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 5px 0 10px;
-}
-.cardlist-title {
-  font-size: 16px;
-  margin: 0;
-  padding: 0;
-}
-.cardlist-subtitle {
-  margin: 0 0 20px;
-  color: #5e6c84;
-  padding: 0 10px 0 10px;
-}
-.cardlist-newcard {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9,30,66,.25);
-  margin-bottom: 8px;
-  min-height: 50px;
-  max-height: 200px;
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  overflow: hidden;
-  resize: none;
-  width: 250px;
-  outline: none;
 }
 .cardlist-newcard:focus,
 .cardlist-button-newcard:focus {

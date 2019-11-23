@@ -1,14 +1,46 @@
 import React, { Component } from 'react';
-import { FaTimes, FaPlus } from 'react-icons/fa';
+import styled from 'styled-components';
+import { FaPlus } from 'react-icons/fa';
 import Card from './Card';
 import Menu from './Menu';
+import Form from './Form';
+
+const CardListContainer = styled.div`
+  background-color: #ebecf0;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  width: 275px;
+  margin-right: 10px;
+  max-height: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 5px 0 10px;
+`;
+
+const Title = styled.h3`
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+`;
+
+const SubTitle = styled.p`
+  margin: 0 0 20px;
+  color: #5e6c84;
+  padding: 0 10px 0 10px;
+`;
 
 class CardList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      newCardText: '',
       creatingNewCard: false
     };
 
@@ -44,56 +76,35 @@ class CardList extends Component {
       ]
     ];
 
-    this.newCard = React.createRef();
-
-    this.addNewCard = this.addNewCard.bind(this);
-    this.cancelNewCard = this.cancelNewCard.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleAddNewCard = this.handleAddNewCard.bind(this);
+    this.handleCancelNewCard = this.handleCancelNewCard.bind(this);
 
   }
 
-  componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
-  }
-
-  handleClick(e) {
-    if (this.newCard && this.newCard.current && this.newCard.current.contains(e.target)) {
-      return;
+  handleAddNewCard(cardText) {
+    if (cardText) {
+      this.props.onAddCard(this.props.data.id, cardText);
     }
-    this.setState({ newCardText: '', creatingNewCard: false });
+    this.setState({ creatingNewCard: false });
   }
 
-  addNewCard(e) {
-    e.preventDefault();
-    if (this.state.newCardText) {
-      this.props.onAddCard(this.props.data.id, this.state.newCardText);
-    }
-    this.setState({ newCardText: '', creatingNewCard: false });
-  }
-
-  cancelNewCard() {
-    this.setState({ newCardText: '', creatingNewCard: false });
+  handleCancelNewCard() {
+    this.setState({ creatingNewCard: false });
   }
 
   renderHeader() {
     const data = this.props.data;
     return (
-      <div className="cardlist-header">
-        <div className="cardlist-title-container">
-          <h3 className="cardlist-title">{data.title}</h3>
+      <div>
+        <TitleContainer>
+          <Title>{data.title}</Title>
           <Menu
             isOpen={this.props.isMenuOpen} 
             onClick={() => this.props.onToggleMenu(data.id)}
             actions={this.actions}
           />
-        </div>
-        <p className="cardlist-subtitle">
-          {data.cards.length} cards
-        </p>
+        </TitleContainer>
+        <SubTitle>{data.cards.length} cards</SubTitle>
       </div>
     );
   }
@@ -116,18 +127,6 @@ class CardList extends Component {
             </li>
           ))
         }
-        {
-          this.state.creatingNewCard &&
-          <li ref={this.newCard}>
-            <textarea 
-              className="cardlist-newcard"
-              type="text" 
-              value={this.state.newCardText} 
-              placeholder="Enter a title for this card..."
-              onChange={(e) => this.setState({ newCardText: e.target.value })} 
-            />
-          </li>
-        }
       </ol>
     );
   }
@@ -135,18 +134,13 @@ class CardList extends Component {
   renderFooter() {
     if (this.state.creatingNewCard) {
       return (
-        <div>
-          <input 
-            className="cardlist-button-addcard"
-            type="submit"
-            value="Add Card"
-            onClick={(e) => this.addNewCard(e)}
-          />
-          <FaTimes 
-            className="cardlist-button-cancel"
-            onClick={this.cancelNewCard}
-          />
-        </div>      
+        <Form
+          type="card"
+          placeholder="Enter a title for this card..."
+          buttonText="Add Card"
+          onClickSubmit={this.handleAddNewCard}
+          onClickCancel={this.handleCancelNewCard}
+        />      
       );
     }
     else {
@@ -164,11 +158,11 @@ class CardList extends Component {
 
   render() {
     return (
-      <div className="cardlist">
+      <CardListContainer>
         { this.renderHeader() }
         { this.renderCards() }
         { this.renderFooter() }
-      </div>
+      </CardListContainer>
     );
   }
 };
