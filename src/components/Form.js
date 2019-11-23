@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FaTimes } from 'react-icons/fa';
+import { IoIosClose as CancelIcon } from 'react-icons/io';
 import Button from './Button';
 
 const FormContainer = styled.form`
-  padding: 10px;
+  padding: ${props => props.type === 'list' ? '10px' : '0'};
   background-color: #ebecf0;
   border-radius: 3px;
-  width: 275px;
+  width: ${props => props.type === 'list' ? '275px' : '250px'};
+`;
+
+const FormTextArea = styled.textarea`
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  margin-bottom: 8px;
+  min-height: 50px;
+  max-height: 200px;
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  overflow: hidden;
+  resize: none;
+  width: 250px;
+  outline: none;
 `;
 
 const FormInput = styled.input`
@@ -25,7 +41,7 @@ const FormInput = styled.input`
   outline: none;
 `;
 
-const CancelIcon = styled(FaTimes)`
+const FormIcon = styled(CancelIcon)`
   font-size: 24px;
   cursor: pointer;
   color: #5e6c84;
@@ -33,24 +49,38 @@ const CancelIcon = styled(FaTimes)`
 `;
 
 class Form extends Component {
-  state = { inputText: '' }
+  constructor(props) {
+    super(props);
+
+    this.state = { inputText: '' };
+
+    this.handleOnChangeText = this.handleOnChangeText.bind(this);
+  }
+
+  handleOnChangeText(e) {
+    this.setState({ inputText: e.target.value });
+  }
 
   render() {
+    const options = {
+      type: "text", 
+      value: this.state.inputText,
+      placeholder: this.props.placeholder,
+      onChange: this.handleOnChangeText
+    };
+
     return (
-      <FormContainer>
-        <FormInput 
-          type="text" 
-          value={this.state.inputText} 
-          placeholder={this.props.inputPlaceholder}
-          onChange={(e) => this.setState({ inputText: e.target.value })} 
-        />
+      <FormContainer type={this.props.type} >
+        {
+          this.props.type === 'list' 
+          ? <FormInput {...options} /> 
+          : <FormTextArea {...options} />
+        } 
         <Button 
           text={this.props.buttonText}
-          onClick={() => this.props.onClickButton(this.state.inputText)} 
+          onClick={() => this.props.onClickSubmit(this.state.inputText)} 
         />
-        <CancelIcon
-          onClick={this.props.onClickCancel}
-        />
+        <FormIcon onClick={this.props.onClickCancel} />
       </FormContainer>
     );
   }

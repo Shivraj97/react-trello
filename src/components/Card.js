@@ -22,8 +22,11 @@ const TagsContainer = styled.div`
   margin-bottom: 5px;
 `;
 
+const Text = styled.p`
+  margin: 0;
+`;
+
 const Card = ({ id, description = "", tags = [] }) => {
-  console.log(id, description, tags);
   return (
   <CardContainer>
     {
@@ -36,7 +39,7 @@ const Card = ({ id, description = "", tags = [] }) => {
       }
       </TagsContainer>
     }
-    <p>{'#' + id + ' ' + description}</p>
+    <Text>{'#' + id + ' ' + description}</Text>
   </CardContainer>
   );
 };

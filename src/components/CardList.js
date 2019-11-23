@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
+import { IoIosAdd as AddIcon } from 'react-icons/io';
 import Card from './Card';
 import Menu from './Menu';
 import Form from './Form';
@@ -15,6 +15,33 @@ const CardListContainer = styled.div`
   max-height: 100%;
   padding-right: 10px;
   padding-left: 10px;
+`;
+
+const CardListFooter = styled.button`
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: #5e6c84;
+  cursor: pointer;
+  padding: 10px 10px;
+  margin: 0 -10px;
+  font-weight: 500;
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: rgba(9,30,66,.08);
+    color: #172b4d;
+    text-decoration: underline;
+  }
+`;
+
+const CardsContainer = styled.ol`
+  overflow: auto;
+  list-style: none;
+  padding-left: 0;
 `;
 
 const TitleContainer = styled.div`
@@ -40,9 +67,7 @@ class CardList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      creatingNewCard: false
-    };
+    this.state = { creatingNewCard: false };
 
     this.actions = [
       [
@@ -78,18 +103,22 @@ class CardList extends Component {
 
     this.handleAddNewCard = this.handleAddNewCard.bind(this);
     this.handleCancelNewCard = this.handleCancelNewCard.bind(this);
-
+    this.handleCreateNewCard = this.handleCreateNewCard.bind(this);
   }
 
   handleAddNewCard(cardText) {
     if (cardText) {
       this.props.onAddCard(this.props.data.id, cardText);
     }
-    this.setState({ creatingNewCard: false });
+    this.handleCancelNewCard();
   }
 
   handleCancelNewCard() {
     this.setState({ creatingNewCard: false });
+  }
+
+  handleCreateNewCard() {
+    this.setState({ creatingNewCard: true });
   }
 
   renderHeader() {
@@ -112,7 +141,7 @@ class CardList extends Component {
   renderCards() {
     const data = this.props.data;
     return (
-      <ol className="cardlist-cards">
+      <CardsContainer>
         {
           data.cards.map(card => (
             <li 
@@ -127,33 +156,25 @@ class CardList extends Component {
             </li>
           ))
         }
-      </ol>
+      </CardsContainer>
     );
   }
 
   renderFooter() {
-    if (this.state.creatingNewCard) {
-      return (
-        <Form
+    return (
+      this.state.creatingNewCard 
+      ? <Form
           type="card"
           placeholder="Enter a title for this card..."
           buttonText="Add Card"
           onClickSubmit={this.handleAddNewCard}
           onClickCancel={this.handleCancelNewCard}
-        />      
-      );
-    }
-    else {
-      return (
-        <button 
-          className="cardlist-button-newcard"
-          onClick={() => this.setState({ creatingNewCard: true })}
-        >
-          <FaPlus />
+        />
+      : <CardListFooter onClick={this.handleCreateNewCard}>
+          <AddIcon />
           { this.props.data.cards.length === 0 ? "Add a card" : "Add another card" }
-        </button>          
-      );
-    }
+        </CardListFooter>  
+    );
   }
 
   render() {

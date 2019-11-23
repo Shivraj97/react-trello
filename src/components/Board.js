@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
+import { IoIosAdd as AddIcon } from 'react-icons/io';
 import CardList from './CardList';
 import Form from './Form';
 
@@ -45,11 +45,31 @@ const BoardContainer = styled.div`
 `;
 
 const ListsContainer = styled.ol`
+  list-style: none;
+  padding-left: 0;
   display: flex;
   flex-direction: row;
   margin: 0;
   overflow-y: hidden;
   overflow-x: auto;
+`;
+
+const NewList = styled.button`
+  border-radius: 3px;
+  border-color: transparent;
+  width: 275px;
+  color: #fff;
+  background-color: hsla(0,0%,100%,.24);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px;
+  text-align: left;
+  height: fit-content;
+
+  &:hover { 
+    background-color: hsla(0,0%,100%,.32);
+  }
 `;
 
 class Board extends Component {
@@ -91,7 +111,7 @@ class Board extends Component {
   }
 
   handleAddList(listTitle) {
-    if (this.state.newListText) {
+    if (listTitle) {
       let lists = [...this.state.lists];
       lists.push({
         id: this.state.nextListIndex,
@@ -233,9 +253,9 @@ class Board extends Component {
   }
 
   renderNewList() {
-    if (this.state.creatingNewList) {
-      return (
-        <li>
+    return (
+      this.state.creatingNewList
+      ? <li>
           <Form
             type="list"
             placeholder="Enter a title for this list..."
@@ -244,21 +264,13 @@ class Board extends Component {
             onClickCancel={() => this.setState({ creatingNewList: false })}
           />
         </li>
-      );
-    }
-    else {
-      return (
-        <li>
-          <button 
-            className="board-button"
-            onClick={() => this.setState({ creatingNewList: true })}
-          >
-            <FaPlus /> 
-            { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
-          </button>
-        </li>
-      );
-    }
+      : <li>
+        <NewList onClick={() => this.setState({ creatingNewList: true })}>
+          <AddIcon /> 
+          { this.state.lists.length === 0 ? "Add a list" : "Add another list" }
+        </NewList>
+      </li>
+    );
   }
 
   render() {

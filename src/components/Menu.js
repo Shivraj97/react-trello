@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FaEllipsisH } from 'react-icons/fa';
+import { IoIosMore as MoreIcon } from 'react-icons/io';
 import Divider from './Divider';
 
 const MenuContainer = styled.div`
@@ -8,7 +8,7 @@ const MenuContainer = styled.div`
   display: inline-block;
 `;
 
-const MenuIcon = styled(FaEllipsisH)`
+const MenuIcon = styled(MoreIcon)`
   color: #5e6c84;
   cursor: pointer;
   padding: 5px;

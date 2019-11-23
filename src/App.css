@@ -1,49 +1,11 @@
-ol {
-  list-style: none;
-  padding-left: 0;
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-p {
-  margin: 0;
+::-webkit-scrollbar-track {
+  background: rgba(9,30,66,.08);
+  border-radius: 5px;
 }
-
-.board-button {
-  border-radius: 3px;
-  border-color: transparent;
-  width: 275px;
-  color: #fff;
-  background-color: hsla(0,0%,100%,.24);
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  padding: 10px;
-  text-align: left;
-  height: fit-content;
-}
-.board-button:hover {
-  background-color: hsla(0,0%,100%,.32);
-}
-
-.cardlist-cards {
-  overflow: auto;
-}
-.cardlist-newcard:focus,
-.cardlist-button-newcard:focus {
-  outline: none;
-}
-.cardlist-button-newcard {
-  background-color: transparent;
-  border: none;
-  text-align: left;
-  font-size: 14px;
-  color: #5e6c84;
-  cursor: pointer;
-  padding: 10px 10px;
-  margin: 0 -10px;
-  font-weight: 500;
-}
-.cardlist-button-newcard:hover {
-  background-color: rgba(9,30,66,.08);
-  color: #172b4d;
-  text-decoration: underline;
+::-webkit-scrollbar-thumb {
+  background: rgba(9,30,66,.2);
+  border-radius: 5px;
 }
