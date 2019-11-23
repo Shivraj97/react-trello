@@ -172,18 +172,6 @@ p {
   margin-bottom: 5px;
 }
 
-.tag {
-  display: inline-block;
-  background-color: #ff9f1a;
-  color: #fff;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 2px 8px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-}
-
 .menu-container {
   position: relative;
   display: inline-block;

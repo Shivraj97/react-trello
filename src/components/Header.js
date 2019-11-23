@@ -14,12 +14,10 @@ const HeaderTitle = styled.h1`
   font-style: italic;
 `;
 
-const Header = () => {
-  return (
-    <HeaderContainer>
-      <HeaderTitle>React Trello</HeaderTitle>
-    </HeaderContainer>
-  );
-};
+const Header = () => (
+  <HeaderContainer>
+    <HeaderTitle>React Trello</HeaderTitle>
+  </HeaderContainer>
+);
 
 export default Header;
