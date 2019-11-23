@@ -9,10 +9,16 @@ const MenuContainer = styled.div`
 `;
 
 const MenuIcon = styled(MoreIcon)`
-  color: #5e6c84;
+  color: #6b778c;
   cursor: pointer;
   padding: 5px;
   border-radius: 5px;
+  font-size: 20px;
+
+  &:hover {
+    color: #172b4d;
+    background-color: rgba(9,30,66,.08);
+  }
 `;
 
 const PopoverContainer = styled.div`
@@ -48,6 +54,10 @@ const PopoverAction = styled.li`
   &:hover {
     background-color: rgba(9,30,66,.04);
   }
+`;
+
+const PopoverActionTitle = styled.p`
+  margin: 0;
 `;
 
 class Popover extends Component {
@@ -91,7 +101,7 @@ class Popover extends Component {
                       key={j}
                       onClick={action.onClick}
                     >
-                      <p>{action.title}</p>
+                      <PopoverActionTitle>{action.title}</PopoverActionTitle>
                     </PopoverAction>
                   ))
                 }

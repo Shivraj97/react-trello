@@ -41,11 +41,19 @@ const FormInput = styled.input`
   outline: none;
 `;
 
-const FormIcon = styled(CancelIcon)`
-  font-size: 24px;
+const ButtonsContainer = styled.div`
+  margin-bottom: 10px;
+`;
+
+const CancelIconStyled = styled(CancelIcon)`
   cursor: pointer;
-  color: #5e6c84;
+  color: #6b778c;
   vertical-align: middle;
+  font-size: 35px;
+
+  &:hover {
+    color: #172b4d;
+  }
 `;
 
 class Form extends Component {
@@ -76,11 +84,13 @@ class Form extends Component {
           ? <FormInput {...options} /> 
           : <FormTextArea {...options} />
         } 
-        <Button 
-          text={this.props.buttonText}
-          onClick={() => this.props.onClickSubmit(this.state.inputText)} 
-        />
-        <FormIcon onClick={this.props.onClickCancel} />
+        <ButtonsContainer>
+          <Button 
+            text={this.props.buttonText}
+            onClick={() => this.props.onClickSubmit(this.state.inputText)} 
+          />
+          <CancelIconStyled onClick={this.props.onClickCancel} />
+        </ButtonsContainer>
       </FormContainer>
     );
   }

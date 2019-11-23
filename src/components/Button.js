@@ -7,14 +7,15 @@ const ButtonContainer = styled.button`
   color: #fff;
   font-size: 14px;
   cursor: pointer;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  margin-right: 5px;
   border-radius: 3px;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 0px 15px;
   text-align: center;
   width: fit-content;
   outline: none;
+  line-height: 35px;
+  vertical-align: middle;
 
   &:hover {
     background-color: #61bd4f;
