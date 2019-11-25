@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ButtonContainer = styled.button`
-  background-color: #5aac44;
+  background-color: ${props => props.type === "success" ? "#5aac44" : "rgba(0,0,0,.6)"};
   border: none;
   color: #fff;
   font-size: 14px;
@@ -18,13 +18,18 @@ const ButtonContainer = styled.button`
   vertical-align: middle;
 
   &:hover {
-    background-color: #61bd4f;
+    background-color: ${props => props.type === "success" ? "#61bd4f" : "rgba(0,0,0,.8)"};
+    transform: ${props => props.type === "editor" ? "translateX(5px)" : null};
   }
 `;
 
-const Button = ({ text, onClick }) => (
-  <ButtonContainer onClick={onClick}>
-    {text}
+const Button = ({ text = '', icon = null, onClick = null, type="success" }) => (
+  <ButtonContainer 
+    onClick={onClick} 
+    type={type}
+  >
+    { icon }
+    { text }
   </ButtonContainer>
 );
 
