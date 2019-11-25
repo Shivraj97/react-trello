@@ -43,7 +43,7 @@ const CardEditor = (props) => {
           type='editor'
           buttonText="Save"
           initialValue={props.initialValue}
-          onClickSubmit={() => null}
+          onClickSubmit={props.onSaveCard}
         />
         <EditorButtons>
           <EditorButton>
@@ -51,6 +51,7 @@ const CardEditor = (props) => {
               icon={<CopyIcon />}
               text="Copy" 
               type="editor"
+              onClick={props.onCopyCard}
             />
           </EditorButton>
           <EditorButton>
@@ -58,6 +59,7 @@ const CardEditor = (props) => {
               icon={<ArchiveIcon />}
               text="Archive"
               type="editor"
+              onClick={props.onArchiveCard}
             />
           </EditorButton>
         </EditorButtons>

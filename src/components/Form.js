@@ -70,10 +70,16 @@ class Form extends Component {
     this.state = { inputText: this.props.initialValue || '' };
 
     this.handleOnChangeText = this.handleOnChangeText.bind(this);
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
   }
 
   handleOnChangeText(e) {
     this.setState({ inputText: e.target.value });
+  }
+
+  handleOnSubmit(e) {
+    e.preventDefault();
+    this.props.onClickSubmit(this.state.inputText);
   }
 
   render() {
@@ -95,7 +101,7 @@ class Form extends Component {
         <ButtonsContainer>
           <Button 
             text={this.props.buttonText}
-            onClick={() => this.props.onClickSubmit(this.state.inputText)} 
+            onClick={this.handleOnSubmit} 
           />
           { 
             this.props.onClickCancel && 

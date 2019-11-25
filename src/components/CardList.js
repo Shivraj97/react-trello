@@ -125,6 +125,9 @@ class CardList extends Component {
     this.handleCancelNewCard = this.handleCancelNewCard.bind(this);
     this.handleCreateNewCard = this.handleCreateNewCard.bind(this);
     this.handleEditCard = this.handleEditCard.bind(this);
+    this.handleCopyCard = this.handleCopyCard.bind(this);
+    this.handleArchiveCard = this.handleArchiveCard.bind(this);
+    this.handleSaveCard = this.handleSaveCard.bind(this);
   }
 
   handleAddNewCard(cardText) {
@@ -144,6 +147,21 @@ class CardList extends Component {
 
   handleEditCard(id, text) {
     this.setState({ editCardId: id, editCardText: text });
+  }
+
+  handleCopyCard() {
+    this.props.onCopyCard(this.props.data.id, this.state.editCardId);
+    this.setState({ editCardId: null, editCardText: "" });
+  }
+
+  handleArchiveCard() {
+    this.props.onRemoveCard(this.props.data.id, this.state.editCardId);
+    this.setState({ editCardId: null, editCardText: "" });
+  }
+
+  handleSaveCard(text) {
+    this.props.onEditCard(this.props.data.id, this.state.editCardId, text);
+    this.setState({ editCardId: null, editCardText: "" });
   }
 
   addCardPosition(node, id) {
@@ -227,6 +245,9 @@ class CardList extends Component {
           <CardEditor 
             initialValue={this.state.editCardText}
             position={this.cardPositions[this.state.editCardId]}
+            onCopyCard={this.handleCopyCard}
+            onArchiveCard={this.handleArchiveCard}
+            onSaveCard={this.handleSaveCard}
           /> 
         }
       </CardListContainer>

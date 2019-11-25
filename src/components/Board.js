@@ -107,6 +107,8 @@ class Board extends Component {
     this.renderLists = this.renderLists.bind(this);
     this.handleMoveAllCards = this.handleMoveAllCards.bind(this);
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
+    this.handleCopyCard = this.handleCopyCard.bind(this);
+    this.handleEditCard = this.handleEditCard.bind(this);
   }
 
   componentWillMount() {
@@ -243,6 +245,43 @@ class Board extends Component {
     }
   }
 
+  handleCopyCard(listId, cardId) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        for (let j = 0; j < lists[i].cards.length; j++) {
+          if (lists[i].cards[j].id === cardId) {
+            lists[i].cards.push({
+              id: this.state.nextCardIndex,
+              description: '(Copy) - ' + lists[i].cards[j].description,
+              tags: lists[i].cards[j].tags
+            });
+            this.setState({ 
+              lists, 
+              nextCardIndex: this.state.nextCardIndex + 1
+            });
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  handleEditCard(listId, cardId, text) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        for (let j = 0; j < lists[i].cards.length; j++) {
+          if (lists[i].cards[j].id === cardId) {
+            lists[i].cards[j].description = text;
+            this.setState({ lists });
+            return;
+          }
+        }
+      }
+    }
+  }
+
   renderLists() {
     let lists = [];
     for (let i = 0; i < this.state.lists.length; i++) {
@@ -258,6 +297,8 @@ class Board extends Component {
             onRemoveAllCards={this.handleRemoveAllCards}
             onCopyList={this.handleCopyList}
             onMoveAllCards={this.handleMoveAllCards}
+            onCopyCard={this.handleCopyCard}
+            onEditCard={this.handleEditCard}
           />
         </li>
       );
