@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IoIosAdd as AddIcon } from 'react-icons/io';
 import Card from './Card';
+import CardEditor from './CardEditor';
 import Menu from './Menu';
 import Form from './Form';
 
@@ -80,7 +81,11 @@ class CardList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { creatingNewCard: false };
+    this.state = { 
+      creatingNewCard: false,
+      editCardId: null,
+      editCardText: ''
+    };
 
     this.actions = [
       [
@@ -114,9 +119,12 @@ class CardList extends Component {
       ]
     ];
 
+    this.cardPositions = {};
+
     this.handleAddNewCard = this.handleAddNewCard.bind(this);
     this.handleCancelNewCard = this.handleCancelNewCard.bind(this);
     this.handleCreateNewCard = this.handleCreateNewCard.bind(this);
+    this.handleEditCard = this.handleEditCard.bind(this);
   }
 
   handleAddNewCard(cardText) {
@@ -132,6 +140,19 @@ class CardList extends Component {
 
   handleCreateNewCard() {
     this.setState({ creatingNewCard: true });
+  }
+
+  handleEditCard(id, text) {
+    this.setState({ editCardId: id, editCardText: text });
+  }
+
+  addCardPosition(node, id) {
+    if (node) {
+      this.cardPositions[id] = {
+        top: node.getBoundingClientRect().top,
+        left: node.getBoundingClientRect().left 
+      };
+    }
   }
 
   renderHeader() {
@@ -159,7 +180,8 @@ class CardList extends Component {
           data.cards.map(card => (
             <li 
               key={card.id}
-              onClick={() => this.props.onRemoveCard(data.id, card.id)}
+              ref={(node) => this.addCardPosition(node, card.id)}
+              onClick={() => this.handleEditCard(card.id, card.description)}
             >
               <Card 
                 id={card.id}
@@ -200,6 +222,13 @@ class CardList extends Component {
         { this.renderHeader() }
         { this.renderCards() }
         { this.renderFooter() }
+        { 
+          this.state.editCardId && 
+          <CardEditor 
+            initialValue={this.state.editCardText}
+            position={this.cardPositions[this.state.editCardId]}
+          /> 
+        }
       </CardListContainer>
     );
   }
