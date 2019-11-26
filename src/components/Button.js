@@ -11,11 +11,9 @@ const ButtonContainer = styled.button`
   border-radius: 3px;
   font-weight: 600;
   padding: 0px 15px;
-  text-align: center;
-  width: fit-content;
   outline: none;
-  line-height: 35px;
-  vertical-align: middle;
+  display: flex;
+  flex-direction: row;
 
   &:hover {
     background-color: ${props => props.type === "success" ? "#61bd4f" : "rgba(0,0,0,.8)"};
@@ -23,13 +21,23 @@ const ButtonContainer = styled.button`
   }
 `;
 
+const ButtonIcon = styled.div`
+  font-size: 15px;
+  line-height: 35px;
+`;
+
+const ButtonText = styled.div`
+  line-height: 35px;
+  margin-left: 5px;
+`;
+
 const Button = ({ text = '', icon = null, onClick = null, type="success" }) => (
   <ButtonContainer 
     onClick={onClick} 
     type={type}
   >
-    { icon }
-    { text }
+    <ButtonIcon>{ icon }</ButtonIcon>
+    <ButtonText>{ text }</ButtonText>
   </ButtonContainer>
 );
 

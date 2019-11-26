@@ -97,6 +97,7 @@ const CardEditor = (props) => {
               isOpen &&
               <Popover
                 title="Labels"
+                offset={{ top: -35 }}
                 onClickOutside={() => setIsOpen(false)}
               >
               {

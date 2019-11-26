@@ -5,6 +5,8 @@ import Divider from './Divider';
 
 const PopoverContainer = styled.div`
   position: absolute;
+  margin-top: ${props => props.offset.top ? props.offset.top + 'px' : 0};
+  margin-left: ${props => props.offset.left ? props.offset.left + 'px' : 0};
   padding: 15px 10px;
   background: #fff;
   border-radius: 3px;
@@ -23,13 +25,13 @@ const PopoverTitle = styled.h4`
   text-align: center;
 `;
 
-const Popover = ({ title = "Title", children = null, onClickOutside = () => null}) => {
+const Popover = ({ title = "Title", children = null, onClickOutside = () => null, offset = {}}) => {
   const popover = React.createRef();
 
   useClickOutsideEffect(popover, onClickOutside);
 
   return (
-    <PopoverContainer ref={popover}>
+    <PopoverContainer ref={popover} offset={offset}>
       <PopoverTitleContainer>
         <PopoverTitle>{title}</PopoverTitle>
       </PopoverTitleContainer>
