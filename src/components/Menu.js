@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useClickOutsideEffect } from '../hooks';
 import styled from 'styled-components';
 import { IoIosMore as MoreIcon } from 'react-icons/io';
 import Divider from './Divider';
@@ -63,19 +64,7 @@ const PopoverActionTitle = styled.p`
 const Popover = (props) => {
   const popover = React.createRef();
 
-  function handleClick(e) {
-    if (popover.current && !popover.current.contains(e.target)) {
-      props.onClickOutside();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-    };
-  });
+  useClickOutsideEffect(popover, props.onClickOutside);
 
   return (
     <PopoverContainer ref={popover}>

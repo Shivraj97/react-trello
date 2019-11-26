@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useClickOutsideEffect } from '../hooks';
 import styled from 'styled-components';
 import { IoIosClose as CancelIcon } from 'react-icons/io';
 import Button from './Button';
@@ -76,19 +77,7 @@ const Form = (props) => {
     props.onClickSubmit(inputText);
   }
 
-  function handleClick(e) {
-    if (form.current && !form.current.contains(e.target)) {
-      props.onClickCancel();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-    };
-  });
+  useClickOutsideEffect(form, props.onClickCancel);
 
   const options = {
     type: "text", 
