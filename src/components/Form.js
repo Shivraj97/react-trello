@@ -56,12 +56,14 @@ const FormInput = styled.input`
 
 const ButtonsContainer = styled.div`
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const CancelIconStyled = styled(CancelIcon)`
   cursor: pointer;
   color: #6b778c;
-  vertical-align: middle;
   font-size: 25px;
 
   &:hover {
