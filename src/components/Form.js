@@ -74,6 +74,7 @@ const CancelIconStyled = styled(CancelIcon)`
 const Form = (props) => {
   const [inputText, setInputText] = useState(props.initialValue || '');
   const form = React.createRef();
+  const textarea = React.createRef();
 
   function handleOnChangeText(e) {
     setInputText(e.target.value);
@@ -84,6 +85,12 @@ const Form = (props) => {
     props.onClickSubmit(inputText);
     setInputText('');
   }
+
+  function handleOnKeyDown(e) {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      handleOnSubmit(e);
+    }
+  }
   
   useClickOutsideEffect(form, props.onClickCancel);
 
@@ -91,9 +98,7 @@ const Form = (props) => {
     type: "text", 
     value: inputText,
     placeholder: props.placeholder,
-    onChange: handleOnChangeText,
-    editor: props.type === "editor",
-    formHasHeader: props.children ? true : false
+    onChange: handleOnChangeText
   };
 
   return (
@@ -104,7 +109,13 @@ const Form = (props) => {
       {
         props.type === 'list' || props.type === 'labels' 
         ? <FormInput {...options} /> 
-        : <FormTextArea {...options} />
+        : <FormTextArea 
+            {...options} 
+            ref={textarea} 
+            editor={props.type === "editor"}
+            formHasHeader={props.children ? true : false}
+            onKeyDown={handleOnKeyDown} 
+          />
       } 
       <ButtonsContainer>
         <Button 
