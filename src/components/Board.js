@@ -167,7 +167,8 @@ class Board extends Component {
       if (lists[i].id === listId) {
         lists[i].cards.push({
           id: this.state.nextCardIndex,
-          description: text
+          description: text,
+          tags: []
         });
         this.setState({ lists, nextCardIndex: this.state.nextCardIndex + 1 });
         return;

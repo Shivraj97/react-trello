@@ -104,7 +104,7 @@ const CardEditor = (props) => {
             onClickSubmit={props.onSaveCard}
           >
             {
-              props.tags.length > 0 &&
+              props.tags && props.tags.length > 0 &&
               <TagsContainer>
               {
                 props.tags.map((tag, i) => (
