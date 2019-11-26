@@ -177,7 +177,9 @@ class CardList extends Component {
   }
 
   handleAddTag(text) {
-    this.props.onAddTag(this.props.data.id, this.state.editCardId, text);
+    if (text) {
+      this.props.onAddTag(this.props.data.id, this.state.editCardId, text);
+    }
   }
 
   addCardPosition(node, id) {
