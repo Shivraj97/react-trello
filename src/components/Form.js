@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useClickOutsideEffect } from '../hooks';
 import styled from 'styled-components';
 import { IoMdClose as CancelIcon } from 'react-icons/io';
@@ -75,6 +75,7 @@ const Form = (props) => {
   const [inputText, setInputText] = useState(props.initialValue || '');
   const form = React.createRef();
   const textarea = React.createRef();
+  const input = React.createRef();
 
   function handleOnChangeText(e) {
     setInputText(e.target.value);
@@ -91,6 +92,15 @@ const Form = (props) => {
       handleOnSubmit(e);
     }
   }
+
+  useEffect(() => {
+    if (input && input.current) {
+      input.current.focus();
+    }
+    if (textarea && textarea.current) {
+      textarea.current.focus();
+    }
+  });
   
   useClickOutsideEffect(form, props.onClickCancel);
 
@@ -108,7 +118,10 @@ const Form = (props) => {
       </FormHeader>
       {
         props.type === 'list' || props.type === 'labels' 
-        ? <FormInput {...options} /> 
+        ? <FormInput 
+            {...options} 
+            ref={input}
+          /> 
         : <FormTextArea 
             {...options} 
             ref={textarea} 
