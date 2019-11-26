@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useClickOutsideEffect } from '../hooks';
 import styled from 'styled-components';
-import { IoIosClose as CancelIcon } from 'react-icons/io';
+import { IoMdClose as CancelIcon } from 'react-icons/io';
 import Button from './Button';
 
 const FormContainer = styled.form`
@@ -57,7 +57,7 @@ const CancelIconStyled = styled(CancelIcon)`
   cursor: pointer;
   color: #6b778c;
   vertical-align: middle;
-  font-size: 35px;
+  font-size: 25px;
 
   &:hover {
     color: #172b4d;
@@ -76,7 +76,7 @@ const Form = (props) => {
     e.preventDefault();
     props.onClickSubmit(inputText);
   }
-
+  
   useClickOutsideEffect(form, props.onClickCancel);
 
   const options = {
@@ -100,7 +100,7 @@ const Form = (props) => {
           onClick={handleOnSubmit} 
         />
         {
-          props.showCancelIcon &&
+          props.onClickCancel &&
           <CancelIconStyled onClick={props.onClickCancel} />
         }
       </ButtonsContainer>

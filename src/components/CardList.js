@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { IoIosAdd as AddIcon } from 'react-icons/io';
+import { IoMdAdd as AddIcon } from 'react-icons/io';
 import Card from './Card';
 import CardEditor from './CardEditor';
 import Menu from './Menu';
@@ -43,12 +43,12 @@ const CardListFooter = styled.button`
 
 const CardListFooterText = styled.p`
   margin: 0;
-  line-height: 25px;
+  line-height: 20px;
 `;
 
 const AddIconStyled = styled(AddIcon)`
   margin-right: 2px;
-  font-size: 25px;
+  font-size: 20px;
   vertical-align: middle;
 `;
 
@@ -84,7 +84,8 @@ class CardList extends Component {
     this.state = { 
       creatingNewCard: false,
       editCardId: null,
-      editCardText: ''
+      editCardText: '',
+      editCardTags: []
     };
 
     this.actions = [
@@ -129,6 +130,7 @@ class CardList extends Component {
     this.handleArchiveCard = this.handleArchiveCard.bind(this);
     this.handleSaveCard = this.handleSaveCard.bind(this);
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
+    this.handleRemoveTag = this.handleRemoveTag.bind(this);
   }
 
   handleAddNewCard(cardText) {
@@ -146,8 +148,8 @@ class CardList extends Component {
     this.setState({ creatingNewCard: true });
   }
 
-  handleEditCard(id, text) {
-    this.setState({ editCardId: id, editCardText: text });
+  handleEditCard(id, text, tags) {
+    this.setState({ editCardId: id, editCardText: text, editCardTags: tags });
   }
 
   handleCopyCard() {
@@ -166,7 +168,11 @@ class CardList extends Component {
   }
 
   handleCancelEdit() {
-    this.setState({ editCardId: null, editCardText: "" });
+    this.setState({ editCardId: null, editCardText: "", editCardTags: [] });
+  }
+
+  handleRemoveTag(tagId) {
+    this.props.onRemoveTag(this.props.data.id, this.state.editCardId, tagId);
   }
 
   addCardPosition(node, id) {
@@ -204,7 +210,7 @@ class CardList extends Component {
             <li 
               key={card.id}
               ref={(node) => this.addCardPosition(node, card.id)}
-              onClick={() => this.handleEditCard(card.id, card.description)}
+              onClick={() => this.handleEditCard(card.id, card.description, card.tags)}
             >
               <Card 
                 id={card.id}
@@ -225,7 +231,6 @@ class CardList extends Component {
           type="card"
           placeholder="Enter a title for this card..."
           buttonText="Add Card"
-          showCancelIcon={true}
           onClickSubmit={this.handleAddNewCard}
           onClickCancel={this.handleCancelNewCard}
         />
@@ -250,11 +255,13 @@ class CardList extends Component {
           this.state.editCardId && 
           <CardEditor 
             initialValue={this.state.editCardText}
+            tags={this.state.editCardTags}
             position={this.cardPositions[this.state.editCardId]}
             onCopyCard={this.handleCopyCard}
             onArchiveCard={this.handleArchiveCard}
             onSaveCard={this.handleSaveCard}
             onCancelEdit={this.handleCancelEdit}
+            onRemoveTag={this.handleRemoveTag}
           /> 
         }
       </CardListContainer>

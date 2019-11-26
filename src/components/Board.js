@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { IoIosAdd as AddIcon } from 'react-icons/io';
+import { IoMdAdd as AddIcon } from 'react-icons/io';
 import CardList from './CardList';
 import Form from './Form';
 
@@ -76,12 +76,12 @@ const NewList = styled.button`
 
 const NewListText = styled.p`
   margin: 0;
-  line-height: 25px;
+  line-height: 20px;
 `;
 
 const AddIconStyled = styled(AddIcon)`
   margin-right: 2px;
-  font-size: 25px;
+  font-size: 20px;
   vertical-align: middle;
 `;
 
@@ -109,6 +109,7 @@ class Board extends Component {
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
     this.handleCopyCard = this.handleCopyCard.bind(this);
     this.handleEditCard = this.handleEditCard.bind(this);
+    this.handleRemoveTag = this.handleRemoveTag.bind(this);
   }
 
   componentWillMount() {
@@ -282,6 +283,21 @@ class Board extends Component {
     }
   }
 
+  handleRemoveTag(listId, cardId, tagId) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        for (let j = 0; j < lists[i].cards.length; j++) {
+          if (lists[i].cards[j].id === cardId) {
+            lists[i].cards[j].tags.splice(tagId, 1);
+            this.setState({ lists });
+            return;
+          }
+        }
+      }
+    }
+  }
+
   renderLists() {
     let lists = [];
     for (let i = 0; i < this.state.lists.length; i++) {
@@ -299,6 +315,7 @@ class Board extends Component {
             onMoveAllCards={this.handleMoveAllCards}
             onCopyCard={this.handleCopyCard}
             onEditCard={this.handleEditCard}
+            onRemoveTag={this.handleRemoveTag}
           />
         </li>
       );
@@ -314,7 +331,6 @@ class Board extends Component {
             type="list"
             placeholder="Enter a title for this list..."
             buttonText="Add List"
-            showCancelIcon={true}
             onClickSubmit={this.handleAddList}
             onClickCancel={() => this.setState({ creatingNewList: false })}
           />

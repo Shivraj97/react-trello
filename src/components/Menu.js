@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useClickOutsideEffect } from '../hooks';
+import React from 'react';
 import styled from 'styled-components';
 import { IoIosMore as MoreIcon } from 'react-icons/io';
+import Popover from './Popover';
 import Divider from './Divider';
 
 const MenuContainer = styled.div`
@@ -20,26 +20,6 @@ const MenuIcon = styled(MoreIcon)`
     color: #172b4d;
     background-color: rgba(9,30,66,.08);
   }
-`;
-
-const PopoverContainer = styled.div`
-  position: absolute;
-  padding: 15px 10px;
-  background: #fff;
-  border-radius: 3px;
-  box-shadow: 0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
-  overflow: hidden;
-  width: 300px;
-`;
-
-const PopoverTitleContainer = styled.div`
-  margin-bottom: 10px;
-`;
-
-const PopoverTitle = styled.h4`
-  margin: 0 0 15px;
-  color: #5e6c84;
-  text-align: center;
 `;
 
 const PopoverActionsContainer = styled.ul`
@@ -61,19 +41,17 @@ const PopoverActionTitle = styled.p`
   margin: 0;
 `;
 
-const Popover = (props) => {
-  const popover = React.createRef();
-
-  useClickOutsideEffect(popover, props.onClickOutside);
-
-  return (
-    <PopoverContainer ref={popover}>
-      <PopoverTitleContainer>
-        <PopoverTitle>List Actions</PopoverTitle>
-      </PopoverTitleContainer>
-      <Divider />
+const Menu = ({ isOpen = false, actions = [], onClick = () => null }) => (
+  <MenuContainer>
+    <MenuIcon onClick={onClick} />
+    { 
+      isOpen && 
+      <Popover
+        title="List Actions"
+        onClickOutside={onClick}
+      >
       {
-        props.actions.map((list, i) => (
+        actions.map((list, i) => (
           <div key={i}>
             <PopoverActionsContainer>
               {
@@ -91,19 +69,7 @@ const Popover = (props) => {
           </div>
         ))
       }
-    </PopoverContainer>
-  );
-}
-
-const Menu = ({ isOpen, actions, onClick }) => (
-  <MenuContainer>
-    <MenuIcon onClick={onClick} />
-    { 
-      isOpen && 
-      <Popover 
-        actions={actions} 
-        onClickOutside={onClick}
-      /> 
+      </Popover> 
     }
   </MenuContainer>
 );
