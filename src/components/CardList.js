@@ -128,6 +128,7 @@ class CardList extends Component {
     this.handleCopyCard = this.handleCopyCard.bind(this);
     this.handleArchiveCard = this.handleArchiveCard.bind(this);
     this.handleSaveCard = this.handleSaveCard.bind(this);
+    this.handleCancelEdit = this.handleCancelEdit.bind(this);
   }
 
   handleAddNewCard(cardText) {
@@ -151,16 +152,20 @@ class CardList extends Component {
 
   handleCopyCard() {
     this.props.onCopyCard(this.props.data.id, this.state.editCardId);
-    this.setState({ editCardId: null, editCardText: "" });
+    this.handleCancelEdit();
   }
 
   handleArchiveCard() {
     this.props.onRemoveCard(this.props.data.id, this.state.editCardId);
-    this.setState({ editCardId: null, editCardText: "" });
+    this.handleCancelEdit();
   }
 
   handleSaveCard(text) {
     this.props.onEditCard(this.props.data.id, this.state.editCardId, text);
+    this.handleCancelEdit();
+  }
+
+  handleCancelEdit() {
     this.setState({ editCardId: null, editCardText: "" });
   }
 
@@ -220,6 +225,7 @@ class CardList extends Component {
           type="card"
           placeholder="Enter a title for this card..."
           buttonText="Add Card"
+          showCancelIcon={true}
           onClickSubmit={this.handleAddNewCard}
           onClickCancel={this.handleCancelNewCard}
         />
@@ -248,6 +254,7 @@ class CardList extends Component {
             onCopyCard={this.handleCopyCard}
             onArchiveCard={this.handleArchiveCard}
             onSaveCard={this.handleSaveCard}
+            onCancelEdit={this.handleCancelEdit}
           /> 
         }
       </CardListContainer>

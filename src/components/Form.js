@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoIosClose as CancelIcon } from 'react-icons/io';
 import Button from './Button';
@@ -63,54 +63,60 @@ const CancelIconStyled = styled(CancelIcon)`
   }
 `;
 
-class Form extends Component {
-  constructor(props) {
-    super(props);
+const Form = (props) => {
+  const [inputText, setInputText] = useState(props.initialValue || '');
+  const form = React.createRef();
 
-    this.state = { inputText: this.props.initialValue || '' };
-
-    this.handleOnChangeText = this.handleOnChangeText.bind(this);
-    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+  function handleOnChangeText(e) {
+    setInputText(e.target.value);
   }
 
-  handleOnChangeText(e) {
-    this.setState({ inputText: e.target.value });
-  }
-
-  handleOnSubmit(e) {
+  function handleOnSubmit(e) {
     e.preventDefault();
-    this.props.onClickSubmit(this.state.inputText);
+    props.onClickSubmit(inputText);
   }
 
-  render() {
-    const options = {
-      type: "text", 
-      value: this.state.inputText,
-      placeholder: this.props.placeholder,
-      onChange: this.handleOnChangeText,
-      editor: this.props.type === "editor"
+  function handleClick(e) {
+    if (form.current && !form.current.contains(e.target)) {
+      props.onClickCancel();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
     };
+  });
 
-    return (
-      <FormContainer type={this.props.type} >
+  const options = {
+    type: "text", 
+    value: inputText,
+    placeholder: props.placeholder,
+    onChange: handleOnChangeText,
+    editor: props.type === "editor"
+  };
+
+  return (
+    <FormContainer type={props.type} ref={form}>
+      {
+        props.type === 'list' 
+        ? <FormInput {...options} /> 
+        : <FormTextArea {...options} />
+      } 
+      <ButtonsContainer>
+        <Button 
+          text={props.buttonText}
+          onClick={handleOnSubmit} 
+        />
         {
-          this.props.type === 'list' 
-          ? <FormInput {...options} /> 
-          : <FormTextArea {...options} />
-        } 
-        <ButtonsContainer>
-          <Button 
-            text={this.props.buttonText}
-            onClick={this.handleOnSubmit} 
-          />
-          { 
-            this.props.onClickCancel && 
-            <CancelIconStyled onClick={this.props.onClickCancel} />
-          }
-        </ButtonsContainer>
-      </FormContainer>
-    );
-  }
+          props.showCancelIcon &&
+          <CancelIconStyled onClick={props.onClickCancel} />
+        }
+      </ButtonsContainer>
+    </FormContainer>
+  );
 };
 
 export default Form;

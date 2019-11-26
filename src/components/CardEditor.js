@@ -44,6 +44,7 @@ const CardEditor = (props) => {
           buttonText="Save"
           initialValue={props.initialValue}
           onClickSubmit={props.onSaveCard}
+          onClickCancel={props.onCancelEdit}
         />
         <EditorButtons>
           <EditorButton>

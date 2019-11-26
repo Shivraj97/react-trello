@@ -314,6 +314,7 @@ class Board extends Component {
             type="list"
             placeholder="Enter a title for this list..."
             buttonText="Add List"
+            showCancelIcon={true}
             onClickSubmit={this.handleAddList}
             onClickCancel={() => this.setState({ creatingNewList: false })}
           />
