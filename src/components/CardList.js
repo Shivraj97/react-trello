@@ -120,7 +120,7 @@ class CardList extends Component {
       ]
     ];
 
-    this.cardPositions = {};
+    this.cardRefs = {};
 
     this.handleAddNewCard = this.handleAddNewCard.bind(this);
     this.handleCancelNewCard = this.handleCancelNewCard.bind(this);
@@ -182,12 +182,9 @@ class CardList extends Component {
     }
   }
 
-  addCardPosition(node, id) {
+  handleCardRef(node, id) {
     if (node) {
-      this.cardPositions[id] = {
-        top: node.getBoundingClientRect().top,
-        left: node.getBoundingClientRect().left 
-      };
+      this.cardRefs[id] = node;
     }
   }
 
@@ -216,7 +213,7 @@ class CardList extends Component {
           data.cards.map(card => (
             <li 
               key={card.id}
-              ref={(node) => this.addCardPosition(node, card.id)}
+              ref={(node) => this.handleCardRef(node, card.id)}
               onClick={() => this.handleEditCard(card.id, card.description, card.tags)}
             >
               <Card 
@@ -263,7 +260,10 @@ class CardList extends Component {
           <CardEditor 
             initialValue={this.state.editCardText}
             tags={this.state.editCardTags}
-            position={this.cardPositions[this.state.editCardId]}
+            position={{
+              top: this.cardRefs[this.state.editCardId].getBoundingClientRect().top,
+              left: this.cardRefs[this.state.editCardId].getBoundingClientRect().left 
+            }}
             onCopyCard={this.handleCopyCard}
             onArchiveCard={this.handleArchiveCard}
             onSaveCard={this.handleSaveCard}
