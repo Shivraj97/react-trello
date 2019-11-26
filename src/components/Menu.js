@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { IoIosMore as MoreIcon } from 'react-icons/io';
 import Divider from './Divider';
@@ -60,59 +60,50 @@ const PopoverActionTitle = styled.p`
   margin: 0;
 `;
 
-class Popover extends Component {
-  constructor(props) {
-    super(props);
+const Popover = (props) => {
+  const popover = React.createRef();
 
-    // create a ref to store the Popover/div DOM element
-    this.popover = React.createRef();
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClick, false);
-  }
-
-  handleClick(e) {
-    if (this.popover.current.contains(e.target)) {
-      return;
+  function handleClick(e) {
+    if (popover.current && !popover.current.contains(e.target)) {
+      props.onClickOutside();
     }
-    this.props.onClickOutside();
   }
 
-  render() {
-    return (
-      <PopoverContainer ref={this.popover}>
-        <PopoverTitleContainer>
-          <PopoverTitle>List Actions</PopoverTitle>
-        </PopoverTitleContainer>
-        <Divider />
-        {
-          this.props.actions.map((list, i) => (
-            <div key={i}>
-              <PopoverActionsContainer>
-                {
-                  list.map((action, j) => (
-                    <PopoverAction
-                      key={j}
-                      onClick={action.onClick}
-                    >
-                      <PopoverActionTitle>{action.title}</PopoverActionTitle>
-                    </PopoverAction>
-                  ))
-                }
-              </PopoverActionsContainer>
-              <Divider />
-            </div>
-          ))
-        }
-      </PopoverContainer>
-    );
-  }
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  });
+
+  return (
+    <PopoverContainer ref={popover}>
+      <PopoverTitleContainer>
+        <PopoverTitle>List Actions</PopoverTitle>
+      </PopoverTitleContainer>
+      <Divider />
+      {
+        props.actions.map((list, i) => (
+          <div key={i}>
+            <PopoverActionsContainer>
+              {
+                list.map((action, j) => (
+                  <PopoverAction
+                    key={j}
+                    onClick={action.onClick}
+                  >
+                    <PopoverActionTitle>{action.title}</PopoverActionTitle>
+                  </PopoverAction>
+                ))
+              }
+            </PopoverActionsContainer>
+            <Divider />
+          </div>
+        ))
+      }
+    </PopoverContainer>
+  );
 }
 
 const Menu = ({ isOpen, actions, onClick }) => (
