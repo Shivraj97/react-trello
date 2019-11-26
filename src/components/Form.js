@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useClickOutsideEffect } from '../hooks';
 import styled from 'styled-components';
 import { IoMdClose as CancelIcon } from 'react-icons/io';
@@ -20,7 +20,7 @@ const FormContainer = styled.form`
 
 const FormTextArea = styled.textarea`
   background-color: #fff;
-  border-radius: 3px;
+  border-radius: ${props => props.editor ? "0 0 3px 3px" : "3px"};
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
   margin-bottom: 8px;
   min-height: 50px;

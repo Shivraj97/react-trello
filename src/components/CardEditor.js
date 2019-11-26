@@ -10,8 +10,9 @@ import {
 import Button from './Button';
 import Form from './Form';
 import Popover from './Popover';
+import Tag from './Tag';
 
-const CardEditorContainer = styled.div`
+const EditorContainer = styled.div`
   background: rgba(0,0,0,.6);
   color: #fff;
   position: fixed;
@@ -28,6 +29,17 @@ const Editor = styled.div`
   left: ${props => props.position.left + "px"};
   display: flex;
   flex-direction: row;
+`;
+
+const EditorCard = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TagsContainer = styled.div`
+  border-radius: 3px 3px 0px 0px;
+  background-color: #fff;
+  padding: 10px 10px 0 10px;
 `;
 
 const EditorButtons = styled.ul`
@@ -69,6 +81,13 @@ const RemoveIconStyled = styled(RemoveIcon)`
   vertical-align: middle;
 `;
 
+const PopoverNewLabelTitle = styled.h4`
+  margin: 15px 0;
+  color: #5e6c84;
+  font-size: 12px;
+  text-transform: uppercase;
+`;
+
 const CardEditor = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,14 +96,26 @@ const CardEditor = (props) => {
   useClickOutsideEffect(editor, props.onCancelEdit);
 
   return (
-    <CardEditorContainer>
+    <EditorContainer>
       <Editor ref={editor} position={props.position}>
-        <Form 
-          type='editor'
-          buttonText="Save"
-          initialValue={props.initialValue}
-          onClickSubmit={props.onSaveCard}
-        />
+        <EditorCard>
+          {
+            props.tags.length > 0 &&
+            <TagsContainer>
+            {
+              props.tags.map((tag, i) => (
+                <Tag key={i} text={tag} />
+              ))
+            }
+            </TagsContainer>
+          }
+          <Form 
+            type='editor'
+            buttonText="Save"
+            initialValue={props.initialValue}
+            onClickSubmit={props.onSaveCard}
+          />
+        </EditorCard>
         <EditorButtons>
           <EditorButton>
             <Button 
@@ -115,6 +146,13 @@ const CardEditor = (props) => {
                       )) 
                     } 
                   </PopoverLabels>
+                  <PopoverNewLabelTitle>Add a new label</PopoverNewLabelTitle>
+                  <Form 
+                    type="list"
+                    buttonText="Add"
+                    placeholder="Enter a new for this label..."
+                    onClickSubmit={() => null}
+                  />
                 </div>
               }
               </Popover>
@@ -138,7 +176,7 @@ const CardEditor = (props) => {
           </EditorButton>
         </EditorButtons>
       </Editor>
-    </CardEditorContainer>
+    </EditorContainer>
   );
 };
 
