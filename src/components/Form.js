@@ -80,6 +80,7 @@ const Form = (props) => {
   function handleOnSubmit(e) {
     e.preventDefault();
     props.onClickSubmit(inputText);
+    setInputText('');
   }
   
   useClickOutsideEffect(form, props.onClickCancel);
@@ -99,7 +100,7 @@ const Form = (props) => {
         { props.children }
       </FormHeader>
       {
-        props.type === 'list' 
+        props.type === 'list' || props.type === 'labels' 
         ? <FormInput {...options} /> 
         : <FormTextArea {...options} />
       } 

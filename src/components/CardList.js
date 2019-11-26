@@ -131,6 +131,7 @@ class CardList extends Component {
     this.handleSaveCard = this.handleSaveCard.bind(this);
     this.handleCancelEdit = this.handleCancelEdit.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
   }
 
   handleAddNewCard(cardText) {
@@ -173,6 +174,10 @@ class CardList extends Component {
 
   handleRemoveTag(tagId) {
     this.props.onRemoveTag(this.props.data.id, this.state.editCardId, tagId);
+  }
+
+  handleAddTag(text) {
+    this.props.onAddTag(this.props.data.id, this.state.editCardId, text);
   }
 
   addCardPosition(node, id) {
@@ -262,6 +267,7 @@ class CardList extends Component {
             onSaveCard={this.handleSaveCard}
             onCancelEdit={this.handleCancelEdit}
             onRemoveTag={this.handleRemoveTag}
+            onAddTag={this.handleAddTag}
           /> 
         }
       </CardListContainer>

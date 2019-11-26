@@ -147,10 +147,10 @@ const CardEditor = (props) => {
                   </PopoverLabels>
                   <PopoverNewLabelTitle>Add a new label</PopoverNewLabelTitle>
                   <Form 
-                    type="list"
+                    type="labels"
                     buttonText="Add"
                     placeholder="Enter a name for this label..."
-                    onClickSubmit={() => null}
+                    onClickSubmit={props.onAddTag}
                   />
                 </div>
               }

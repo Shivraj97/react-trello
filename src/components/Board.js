@@ -110,6 +110,7 @@ class Board extends Component {
     this.handleCopyCard = this.handleCopyCard.bind(this);
     this.handleEditCard = this.handleEditCard.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
   }
 
   componentWillMount() {
@@ -298,6 +299,21 @@ class Board extends Component {
     }
   }
 
+  handleAddTag(listId, cardId, text) {
+    let lists = [...this.state.lists];
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].id === listId) {
+        for (let j = 0; j < lists[i].cards.length; j++) {
+          if (lists[i].cards[j].id === cardId) {
+            lists[i].cards[j].tags.push(text);
+            this.setState({ lists });
+            return;
+          }
+        }
+      }
+    }
+  }
+
   renderLists() {
     let lists = [];
     for (let i = 0; i < this.state.lists.length; i++) {
@@ -316,6 +332,7 @@ class Board extends Component {
             onCopyCard={this.handleCopyCard}
             onEditCard={this.handleEditCard}
             onRemoveTag={this.handleRemoveTag}
+            onAddTag={this.handleAddTag}
           />
         </li>
       );
