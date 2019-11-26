@@ -24,11 +24,11 @@ const ButtonContainer = styled.button`
 const ButtonIcon = styled.div`
   font-size: 15px;
   line-height: 35px;
+  margin-right: 5px;
 `;
 
 const ButtonText = styled.div`
   line-height: 35px;
-  margin-left: 5px;
 `;
 
 const Button = ({ text = '', icon = null, onClick = null, type="success" }) => (
@@ -36,7 +36,7 @@ const Button = ({ text = '', icon = null, onClick = null, type="success" }) => (
     onClick={onClick} 
     type={type}
   >
-    <ButtonIcon>{ icon }</ButtonIcon>
+    { icon !== null ? <ButtonIcon>{ icon }</ButtonIcon> : null }
     <ButtonText>{ text }</ButtonText>
   </ButtonContainer>
 );

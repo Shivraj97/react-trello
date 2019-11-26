@@ -37,8 +37,6 @@ const EditorCard = styled.div`
 `;
 
 const TagsContainer = styled.div`
-  border-radius: 3px 3px 0px 0px;
-  background-color: #fff;
   padding: 10px 10px 0 10px;
 `;
 
@@ -99,22 +97,23 @@ const CardEditor = (props) => {
     <EditorContainer>
       <Editor ref={editor} position={props.position}>
         <EditorCard>
-          {
-            props.tags.length > 0 &&
-            <TagsContainer>
-            {
-              props.tags.map((tag, i) => (
-                <Tag key={i} text={tag} />
-              ))
-            }
-            </TagsContainer>
-          }
           <Form 
             type='editor'
             buttonText="Save"
             initialValue={props.initialValue}
             onClickSubmit={props.onSaveCard}
-          />
+          >
+            {
+              props.tags.length > 0 &&
+              <TagsContainer>
+              {
+                props.tags.map((tag, i) => (
+                  <Tag key={i} text={tag} />
+                ))
+              }
+              </TagsContainer>
+            }
+          </Form>
         </EditorCard>
         <EditorButtons>
           <EditorButton>
@@ -150,7 +149,7 @@ const CardEditor = (props) => {
                   <Form 
                     type="list"
                     buttonText="Add"
-                    placeholder="Enter a new for this label..."
+                    placeholder="Enter a name for this label..."
                     onClickSubmit={() => null}
                   />
                 </div>

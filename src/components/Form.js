@@ -18,9 +18,14 @@ const FormContainer = styled.form`
   }};
 `;
 
+const FormHeader = styled.div`
+  background-color: #fff;
+  border-radius: 3px 3px 0px 0px;
+`;
+
 const FormTextArea = styled.textarea`
   background-color: #fff;
-  border-radius: ${props => props.editor ? "0 0 3px 3px" : "3px"};
+  border-radius: ${props => props.formHasHeader ? "0px 0px 3px 3px" : "3px"};
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
   margin-bottom: 8px;
   min-height: 50px;
@@ -84,11 +89,15 @@ const Form = (props) => {
     value: inputText,
     placeholder: props.placeholder,
     onChange: handleOnChangeText,
-    editor: props.type === "editor"
+    editor: props.type === "editor",
+    formHasHeader: props.children ? true : false
   };
 
   return (
     <FormContainer type={props.type} ref={form}>
+      <FormHeader>
+        { props.children }
+      </FormHeader>
       {
         props.type === 'list' 
         ? <FormInput {...options} /> 
