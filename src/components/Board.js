@@ -88,14 +88,18 @@ class Board extends Component {
 
   componentWillMount() {
     // Compute next index
-    let sum = 0;
+    let max = 0;
     for (let i = 0; i < data.length; i++) {
-      sum += data[i].cards.length;
+      for (let j = 0; j < data[i].cards.length; j++) {
+        if (data[i].cards[j].id > max) {
+          max = data[i].cards[j].id;
+        }
+      }
     }
     // Init state with data
     this.setState({ 
       lists: data, 
-      nextCardIndex: sum + 1,
+      nextCardIndex: max + 1,
       nextListIndex: data.length + 1
     });
   }
