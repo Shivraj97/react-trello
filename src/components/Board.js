@@ -136,12 +136,14 @@ class Board extends Component {
   handleAddList(title) {
     if (title) {
       let lists = {...this.state.lists};
+      let listOrder = [...this.state.listOrder];
       // Get Id for this new list
       const id = _generateID();
       // Add the new list
       lists[id] = { id, title, cardIds: [] };
+      listOrder.push(id);
       // Update state
-      this.setState({ lists, newListText: '', creatingNewList: false });
+      this.setState({ lists, listOrder, newListText: '', creatingNewList: false });
     }
     else {
       // Reset
@@ -152,14 +154,19 @@ class Board extends Component {
   handleRemoveList(listId) {
     let lists = {...this.state.lists};
     let cards = {...this.state.cards};
+    let listOrder = [...this.state.listOrder];
     // Delete all cards from this list
     for (let cardId in lists[listId].cardIds) {
       delete cards[cardId];
     }
     // Delete list itself
     delete lists[listId];
+    const index = listOrder.indexOf(listId);
+    if (index !== 1) {
+      listOrder.splice(index, 1);
+    }
     // Update state
-    this.setState({ lists, cards });
+    this.setState({ lists, cards, listOrder });
   }
 
   handleAddCard(listId, description) {
@@ -345,7 +352,11 @@ class Board extends Component {
 
   render() {
     return (
-      <DragDropContext onDragEnd={this.handleDragEnd}>
+      <DragDropContext 
+        onDragEnd={this.handleDragEnd}
+        onDragStart={this.handleDragStart}
+        onDragUpdate={this.handleDragUpdate}
+      >
         <Droppable 
           droppableId="all-lists"
           direction="horizontal"
