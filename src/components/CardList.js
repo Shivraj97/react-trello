@@ -93,29 +93,29 @@ class CardList extends Component {
         { 
           title: 'Add Card...',
           onClick: () => {
-            this.props.onToggleMenu(this.props.data.id);
+            this.props.onToggleMenu(this.props.id);
             this.setState({ creatingNewCard: true });
           }
         },
         { 
           title: 'Copy List...',
-          onClick: () => this.props.onCopyList(this.props.data.id)
+          onClick: () => this.props.onCopyList(this.props.id)
         }
       ],
       [
         {
           title: 'Move All Cards in This List...',
-          onClick: () => this.props.onMoveAllCards(this.props.data.id)
+          onClick: () => this.props.onMoveAllCards(this.props.id)
         },
         {
           title: 'Archive All Cards in This List...',
-          onClick: () => this.props.onRemoveAllCards(this.props.data.id)
+          onClick: () => this.props.onRemoveAllCards(this.props.id)
         },
       ],
       [
         {
           title: 'Archive This List',
-          onClick: () => this.props.onRemoveList(this.props.data.id)
+          onClick: () => this.props.onRemoveList(this.props.id)
         }
       ]
     ];
@@ -136,7 +136,7 @@ class CardList extends Component {
 
   handleAddNewCard(cardText) {
     if (cardText) {
-      this.props.onAddCard(this.props.data.id, cardText);
+      this.props.onAddCard(this.props.id, cardText);
     }
     this.handleCancelNewCard();
   }
@@ -154,17 +154,17 @@ class CardList extends Component {
   }
 
   handleCopyCard() {
-    this.props.onCopyCard(this.props.data.id, this.state.editCardId);
+    this.props.onCopyCard(this.props.id, this.state.editCardId);
     this.handleCancelEdit();
   }
 
   handleArchiveCard() {
-    this.props.onRemoveCard(this.props.data.id, this.state.editCardId);
+    this.props.onRemoveCard(this.props.id, this.state.editCardId);
     this.handleCancelEdit();
   }
 
   handleSaveCard(text) {
-    this.props.onEditCard(this.props.data.id, this.state.editCardId, text);
+    this.props.onEditCard(this.state.editCardId, text);
     this.handleCancelEdit();
   }
 
@@ -173,12 +173,12 @@ class CardList extends Component {
   }
 
   handleRemoveTag(tagId) {
-    this.props.onRemoveTag(this.props.data.id, this.state.editCardId, tagId);
+    this.props.onRemoveTag(this.state.editCardId, tagId);
   }
 
   handleAddTag(text) {
     if (text) {
-      this.props.onAddTag(this.props.data.id, this.state.editCardId, text);
+      this.props.onAddTag(this.state.editCardId, text);
     }
   }
 
@@ -189,28 +189,26 @@ class CardList extends Component {
   }
 
   renderHeader() {
-    const data = this.props.data;
     return (
       <div>
         <TitleContainer>
-          <Title>{data.title}</Title>
+          <Title>{this.props.title}</Title>
           <Menu
             isOpen={this.props.isMenuOpen} 
-            onClick={() => this.props.onToggleMenu(data.id)}
+            onClick={() => this.props.onToggleMenu(this.props.id)}
             actions={this.actions}
           />
         </TitleContainer>
-        <SubTitle>{data.cards.length} cards</SubTitle>
+        <SubTitle>{this.props.cards.length} cards</SubTitle>
       </div>
     );
   }
 
   renderCards() {
-    const data = this.props.data;
     return (
       <CardsContainer>
         {
-          data.cards.map(card => (
+          this.props.cards.map(card => (
             <li 
               key={card.id}
               ref={(node) => this.handleCardRef(node, card.id)}
@@ -218,6 +216,7 @@ class CardList extends Component {
             >
               <Card 
                 id={card.id}
+                number={card.number}
                 tags={card.tags}
                 description={card.description} 
               />
@@ -241,7 +240,7 @@ class CardList extends Component {
       : <CardListFooter onClick={this.handleCreateNewCard}>
           <AddIconStyled />
           { 
-            this.props.data.cards.length === 0 
+            this.props.cards.length === 0 
             ? <CardListFooterText>Add a card</CardListFooterText> 
             : <CardListFooterText>Add another card</CardListFooterText> 
           }

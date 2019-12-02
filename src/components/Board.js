@@ -4,7 +4,21 @@ import { IoMdAdd as AddIcon } from 'react-icons/io';
 import CardList from './CardList';
 import Form from './Form';
 
-import data from '../data.json';
+import data from '../data';
+
+const _getNextNumber = (cards) => {
+  let nextNumber = -1;
+  for (const id in cards) {
+    if (cards[id].number > nextNumber) {
+      nextNumber = cards[id].number;
+    }
+  }
+  return nextNumber + 1;
+};
+
+const _generateID = () => {
+  return Math.random().toString(36).substr(2, 9);
+}
 
 const BoardContainer = styled.div`
   display: flex;
@@ -63,9 +77,8 @@ class Board extends Component {
     super(props);
 
     this.state = {
-      lists: [],
-      nextCardIndex: -1,
-      nextListIndex: -1,
+      lists: {},
+      cards: {},
       newListText: '',
       creatingNewList: false,
       openMenuId: null,
@@ -87,219 +100,176 @@ class Board extends Component {
   }
 
   componentWillMount() {
-    // Compute next index
-    let max = 0;
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data[i].cards.length; j++) {
-        if (data[i].cards[j].id > max) {
-          max = data[i].cards[j].id;
-        }
-      }
-    }
     // Init state with data
-    this.setState({ 
-      lists: data, 
-      nextCardIndex: max + 1,
-      nextListIndex: data.length + 1
-    });
+    this.setState({ lists: data.lists, cards: data.cards });
   }
 
-  handleAddList(listTitle) {
-    if (listTitle) {
-      let lists = [...this.state.lists];
-      lists.push({
-        id: this.state.nextListIndex,
-        title: listTitle,
-        cards: []
-      });
-      this.setState({ 
-        lists, 
-        nextListIndex: this.state.nextListIndex + 1,
-        newListText: '',
-        creatingNewList: false,
-      });
+  handleAddList(title) {
+    if (title) {
+      let lists = {...this.state.lists};
+      // Get Id for this new list
+      const id = _generateID();
+      // Add the new list
+      lists[id] = { id, title, cardIds: [] };
+      // Update state
+      this.setState({ lists, newListText: '', creatingNewList: false });
     }
     else {
-      this.setState({
-        newListText: '',
-        creatingNewList: false,
-      });
+      // Reset
+      this.setState({ newListText: '', creatingNewList: false });
     }
   }
 
   handleRemoveList(listId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        lists.splice(i, 1);
-        this.setState({ lists });
-        return;
-      }
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    // Delete all cards from this list
+    for (let cardId in lists[listId].cardIds) {
+      delete cards[cardId];
     }
+    // Delete list itself
+    delete lists[listId];
+    // Update state
+    this.setState({ lists, cards });
   }
 
-  handleAddCard(listId, text) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        lists[i].cards.push({
-          id: this.state.nextCardIndex,
-          description: text,
-          tags: []
-        });
-        this.setState({ lists, nextCardIndex: this.state.nextCardIndex + 1 });
-        return;
-      }
+  handleAddCard(listId, description) {
+    if (!description) {
+      return;
     }
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    // Get Id for this new card
+    const id = _generateID();
+    const number = _getNextNumber(cards);
+    // Add the new card
+    cards[id] = { id, number, description, tags: [] };
+    lists[listId].cardIds.push(id);
+    // Update state
+    this.setState({ lists, cards });
   }
 
   handleRemoveCard(listId, cardId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        for (let j = 0; j < lists[i].cards.length; j++) {
-          if (lists[i].cards[j].id === cardId) {
-            lists[i].cards.splice(j, 1);
-            this.setState({ lists });
-            return;
-          }
-        }
-      }
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    // Delete card
+    delete cards[cardId];
+    // Remove card Id from the corresponding list
+    const index = lists[listId].cardIds.indexOf(cardId);
+    if (index !== -1) {
+      lists[listId].cardIds.splice(index, 1);
     }
+    // Update state
+    this.setState({ lists, cards });
   }
 
   handleRemoveAllCards(listId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        lists[i].cards = [];
-        this.setState({ lists, openMenuId: null });
-        return;
-      }
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    // Delete all cards from the corresponding list
+    for (let cardId in lists[listId].cardIds) {
+      delete cards[cardId];
     }
-  }
-
-  handleCopyList(listId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        lists.push({
-          id: this.state.nextListIndex,
-          title: '(Copy) - ' + lists[i].title,
-          cards: lists[i].cards
-        });
-        this.setState({ 
-          lists, 
-          nextListIndex: this.state.nextListIndex + 1,
-          openMenuId: null
-        });
-        return;
-      }
-    }
-  }
-
-  handleMoveAllCards(listId) {
-    let lists = [...this.state.lists];
-    let cards = [];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id !== listId) {
-        cards.push(...lists[i].cards);
-        lists[i].cards = [];
-      }
-    }
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        lists[i].cards.push(...cards);
-        this.setState({ lists, openMenuId: null });
-        return;
-      }
-    }
-  }
-
-  handleToggleMenu(listId) {
-    if (this.state.openMenuId === listId) {
-      this.setState({ openMenuId: null });
-    }
-    else {
-      this.setState({ openMenuId: listId });
-    }
+    // Remove card Ids from the list
+    lists[listId].cardIds = [];
+    // Update state
+    this.setState({ cards, lists, openMenuId: null });
   }
 
   handleCopyCard(listId, cardId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        for (let j = 0; j < lists[i].cards.length; j++) {
-          if (lists[i].cards[j].id === cardId) {
-            lists[i].cards.push({
-              id: this.state.nextCardIndex,
-              description: '(Copy) - ' + lists[i].cards[j].description,
-              tags: lists[i].cards[j].tags
-            });
-            this.setState({ 
-              lists, 
-              nextCardIndex: this.state.nextCardIndex + 1
-            });
-            return;
-          }
-        }
-      }
-    }
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    // Create card copy
+    const id = _generateID();
+    const number = _getNextNumber(cards);
+    cards[id] = { id, number, description: cards[cardId].description, tags: [...cards[cardId].tags] };
+    // Add it to the list
+    lists[listId].cardIds.push(id);
+    this.setState({ cards, lists });
   }
 
-  handleEditCard(listId, cardId, text) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        for (let j = 0; j < lists[i].cards.length; j++) {
-          if (lists[i].cards[j].id === cardId) {
-            lists[i].cards[j].description = text;
-            this.setState({ lists });
-            return;
-          }
-        }
-      }
+  handleCopyList(listId) {
+    let lists = {...this.state.lists};
+    let cards = {...this.state.cards};
+    let cardIds = [];
+    // Copy all cards from list to copy
+    for (let i = 0; i < lists[listId].cardIds.length; i++) {
+      const id = _generateID();
+      const number = _getNextNumber(cards);
+      const cardId = lists[listId].cardIds[i];
+      cardIds.push(id);
+      cards[id] = { id, number, description: cards[cardId].description, tags: [...cards[cardId].tags] };
     }
+    // Copy list with Ids for the new copy cards
+    const id = _generateID();
+    lists[id] = { id, title: '(Copy) - ' + lists[listId].title, cardIds };
+    // Update state
+    this.setState({ cards, lists, openMenuId: null });
   }
 
-  handleRemoveTag(listId, cardId, tagId) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        for (let j = 0; j < lists[i].cards.length; j++) {
-          if (lists[i].cards[j].id === cardId) {
-            lists[i].cards[j].tags.splice(tagId, 1);
-            this.setState({ lists });
-            return;
-          }
-        }
+  handleMoveAllCards(listId) {
+    let lists = {...this.state.lists};
+    let cardIds = [];
+    // Update the lists
+    for (let id in lists) {
+      if (id !== listId) {
+        // Source list
+        cardIds.push(...lists[id].cardIds);
+        lists[id].cardIds = [];
       }
     }
+    // Target list
+    console.log(lists[listId].cardIds);
+    lists[listId].cardIds.push(...cardIds);
+    console.log(lists[listId].cardIds);
+    // Update state
+    this.setState({ lists, openMenuId: null });
   }
 
-  handleAddTag(listId, cardId, text) {
-    let lists = [...this.state.lists];
-    for (let i = 0; i < lists.length; i++) {
-      if (lists[i].id === listId) {
-        for (let j = 0; j < lists[i].cards.length; j++) {
-          if (lists[i].cards[j].id === cardId) {
-            lists[i].cards[j].tags.push(text);
-            this.setState({ lists });
-            return;
-          }
-        }
-      }
+  handleToggleMenu(listId) {
+    this.setState({ openMenuId: this.state.openMenuId === listId ? null : listId });
+  }
+
+  handleEditCard(cardId, description) {
+    let cards = {...this.state.cards};
+    // Update card description
+    cards[cardId].description = description;
+    // Update state
+    this.setState({ cards });
+  }
+
+  handleRemoveTag(cardId, tagId) {
+    let cards = {...this.state.cards};
+    // Remove tag from card
+    if (cards[cardId]) {
+      cards[cardId].tags.splice(tagId, 1);
     }
+    // Update state
+    this.setState({ cards});
+  }
+
+  handleAddTag(cardId, text) {
+    let cards = {...this.state.cards};
+    // Add tag to the corresponding card
+    if (cards[cardId]) {
+      cards[cardId].tags.push(text);
+    }
+    // Update state
+    this.setState({ cards });
   }
 
   renderLists() {
     let lists = [];
-    for (let i = 0; i < this.state.lists.length; i++) {
+    for (const listId in this.state.lists) {
+      const list = this.state.lists[listId];
+      const cards = list.cardIds.map(key => this.state.cards[key]);
       lists.push(
-        <li key={this.state.lists[i].id}>
+        <li key={list.id}>
           <CardList 
-            data={this.state.lists[i]}
-            isMenuOpen={this.state.openMenuId === this.state.lists[i].id}
+            id={list.id}
+            title={list.title}
+            cards={cards}
+            isMenuOpen={this.state.openMenuId === list.id}
             onToggleMenu={this.handleToggleMenu}
             onAddCard={this.handleAddCard}
             onRemoveCard={this.handleRemoveCard}

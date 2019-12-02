@@ -26,7 +26,7 @@ const Text = styled.p`
   margin: 0;
 `;
 
-const Card = ({ id, description = "", tags = [] }) => {
+const Card = ({ id, number, description = "", tags = [] }) => {
   return (
   <CardContainer>
     {
@@ -39,7 +39,7 @@ const Card = ({ id, description = "", tags = [] }) => {
       }
       </TagsContainer>
     }
-    <Text>{'#' + id + ' ' + description}</Text>
+    <Text>{'#' + number + ' ' + description}</Text>
   </CardContainer>
   );
 };
