@@ -13,6 +13,7 @@ const CardContainer = styled.div`
   max-height: 200px;
   padding: 10px;
   margin-right: 5px;
+  transform: ${props => props.isDragging ? "rotate(20deg)": null};
 
   &:hover {
     background-color: #f4f5f7;
@@ -33,11 +34,12 @@ const Card = ({ id, index, number, description = "", tags = [] }) => {
       draggableId={id}
       index={index}
     >
-      {(provided) => (
+      {(provided, snapshot) => (
         <CardContainer
+          ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
         >
           {
             tags.length > 0 &&

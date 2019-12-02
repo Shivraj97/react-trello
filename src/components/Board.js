@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { IoMdAdd as AddIcon } from 'react-icons/io';
 import CardList from './CardList';
@@ -98,11 +99,30 @@ class Board extends Component {
     this.handleEditCard = this.handleEditCard.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
     this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
   componentWillMount() {
     // Init state with data
     this.setState({ lists: data.lists, cards: data.cards, listOrder: data.listOrder });
+  }
+
+  handleDragEnd({ destination, source, draggableId}) {
+    // Drop out of the droppable context
+    if (!destination) {
+      return;
+    }
+    // Drop in the exact same place
+    if (destination.droppableId === source.droppableId && 
+        destination.index === source.index) {
+      return;
+    }
+    // Re-order cards inside the list
+    const lists = {...this.state.lists};
+    lists[source.droppableId].cardIds.splice(source.index, 1);
+    lists[destination.droppableId].cardIds.splice(destination.index, 0, draggableId);
+    // Update state
+    this.setState({ lists });
   }
 
   handleAddList(title) {
@@ -316,12 +336,14 @@ class Board extends Component {
 
   render() {
     return (
-      <BoardContainer>
-        <ListsContainer>
-          { this.renderLists() }
-          { this.renderNewList() }
-        </ListsContainer>
-      </BoardContainer>
+      <DragDropContext onDragEnd={this.handleDragEnd}>
+        <BoardContainer>
+          <ListsContainer>
+            { this.renderLists() }
+            { this.renderNewList() }
+          </ListsContainer>
+        </BoardContainer>
+      </DragDropContext>
     );
   }
 };
