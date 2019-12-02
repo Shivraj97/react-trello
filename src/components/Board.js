@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { IoMdAdd as AddIcon } from 'react-icons/io';
 import CardList from './CardList';
@@ -107,7 +107,7 @@ class Board extends Component {
     this.setState({ lists: data.lists, cards: data.cards, listOrder: data.listOrder });
   }
 
-  handleDragEnd({ destination, source, draggableId}) {
+  handleDragEnd({ destination, source, draggableId, type}) {
     // Drop out of the droppable context
     if (!destination) {
       return;
@@ -118,11 +118,19 @@ class Board extends Component {
       return;
     }
     // Re-order cards inside the list
-    const lists = {...this.state.lists};
-    lists[source.droppableId].cardIds.splice(source.index, 1);
-    lists[destination.droppableId].cardIds.splice(destination.index, 0, draggableId);
-    // Update state
-    this.setState({ lists });
+    if (type === "card") {
+      const lists = {...this.state.lists};
+      lists[source.droppableId].cardIds.splice(source.index, 1);
+      lists[destination.droppableId].cardIds.splice(destination.index, 0, draggableId);
+      this.setState({ lists });
+    }
+    // Re-order lists inside the board
+    if (type === "list") {
+      const listOrder = [...this.state.listOrder];
+      listOrder.splice(source.index, 1);
+      listOrder.splice(destination.index, 0, draggableId);
+      this.setState({ listOrder });
+    }
   }
 
   handleAddList(title) {
@@ -282,13 +290,14 @@ class Board extends Component {
   }
 
   renderLists() {
-    return this.state.listOrder.map(listId => {
+    return this.state.listOrder.map((listId, index) => {
       const list = this.state.lists[listId];
       const cards = list.cardIds.map(key => this.state.cards[key]);
       return (
         <li key={list.id}>
           <CardList 
             id={list.id}
+            index={index}
             title={list.title}
             cards={cards}
             isMenuOpen={this.state.openMenuId === list.id}
@@ -337,12 +346,23 @@ class Board extends Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
-        <BoardContainer>
-          <ListsContainer>
-            { this.renderLists() }
-            { this.renderNewList() }
-          </ListsContainer>
-        </BoardContainer>
+        <Droppable 
+          droppableId="all-lists"
+          direction="horizontal"
+          type="list"
+        >
+          {(provided) => (
+            <BoardContainer
+              ref={provided.innerRef}
+              {...this.props.droppableProps}
+            >
+              <ListsContainer>
+                { this.renderLists() }
+                { this.renderNewList() }
+              </ListsContainer>
+            </BoardContainer>
+          )}
+        </Droppable>
       </DragDropContext>
     );
   }

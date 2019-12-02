@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { IoMdAdd as AddIcon } from 'react-icons/io';
 import Card from './Card';
@@ -189,9 +189,9 @@ class CardList extends Component {
     }
   }
 
-  renderHeader() {
+  renderHeader(provided) {
     return (
-      <div>
+      <div {...provided.dragHandleProps}>
         <TitleContainer>
           <Title>{this.props.title}</Title>
           <Menu
@@ -207,7 +207,7 @@ class CardList extends Component {
 
   renderCards() {
     return (
-      <Droppable droppableId={this.props.id}>
+      <Droppable droppableId={this.props.id} type="card">
         {(provided) => (
           <CardsContainer 
             ref={provided.innerRef}
@@ -260,28 +260,38 @@ class CardList extends Component {
 
   render() {
     return (
-      <CardListContainer>
-        { this.renderHeader() }
-        { this.renderCards() }
-        { this.renderFooter() }
-        { 
-          this.state.editCardId && 
-          <CardEditor 
-            initialValue={this.state.editCardText}
-            tags={this.state.editCardTags}
-            position={{
-              top: this.cardRefs[this.state.editCardId].getBoundingClientRect().top,
-              left: this.cardRefs[this.state.editCardId].getBoundingClientRect().left 
-            }}
-            onCopyCard={this.handleCopyCard}
-            onArchiveCard={this.handleArchiveCard}
-            onSaveCard={this.handleSaveCard}
-            onCancelEdit={this.handleCancelEdit}
-            onRemoveTag={this.handleRemoveTag}
-            onAddTag={this.handleAddTag}
-          /> 
-        }
-      </CardListContainer>
+      <Draggable
+        draggableId={this.props.id}
+        index={this.props.index}
+      >
+        {(provided) => (
+          <CardListContainer
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+          >
+            { this.renderHeader(provided) }
+            { this.renderCards() }
+            { this.renderFooter() }
+            { 
+              this.state.editCardId && 
+              <CardEditor 
+                initialValue={this.state.editCardText}
+                tags={this.state.editCardTags}
+                position={{
+                  top: this.cardRefs[this.state.editCardId].getBoundingClientRect().top,
+                  left: this.cardRefs[this.state.editCardId].getBoundingClientRect().left 
+                }}
+                onCopyCard={this.handleCopyCard}
+                onArchiveCard={this.handleArchiveCard}
+                onSaveCard={this.handleSaveCard}
+                onCancelEdit={this.handleCancelEdit}
+                onRemoveTag={this.handleRemoveTag}
+                onAddTag={this.handleAddTag}
+              /> 
+            }
+          </CardListContainer>
+        )}
+      </Draggable>
     );
   }
 };
