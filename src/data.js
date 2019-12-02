@@ -59,7 +59,8 @@ const data = {
       title: "Done",
       cardIds: ["ftrch98nt", "bionb64f7"]
     }
-  }
+  },
+  listOrder: ["f0y88ej8u", "1528b8oyp", "yu0myoowp"]
 };
 
 export default data;

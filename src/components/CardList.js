@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { IoMdAdd as AddIcon } from 'react-icons/io';
 import Card from './Card';
@@ -206,24 +207,33 @@ class CardList extends Component {
 
   renderCards() {
     return (
-      <CardsContainer>
-        {
-          this.props.cards.map(card => (
-            <li 
-              key={card.id}
-              ref={(node) => this.handleCardRef(node, card.id)}
-              onClick={() => this.handleEditCard(card.id, card.description, card.tags)}
-            >
-              <Card 
-                id={card.id}
-                number={card.number}
-                tags={card.tags}
-                description={card.description} 
-              />
-            </li>
-          ))
-        }
-      </CardsContainer>
+      <Droppable droppableId={this.props.id}>
+        {(provided) => (
+          <CardsContainer 
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {
+              this.props.cards.map((card, index) => (
+                <li 
+                  key={card.id}
+                  ref={(node) => this.handleCardRef(node, card.id)}
+                  onClick={() => this.handleEditCard(card.id, card.description, card.tags)}
+                >
+                  <Card 
+                    id={card.id}
+                    index={index}
+                    number={card.number}
+                    tags={card.tags}
+                    description={card.description} 
+                  />
+                </li>
+              ))
+            }
+            {provided.placeholder}
+          </CardsContainer>
+        )}
+      </Droppable>
     );
   }
 

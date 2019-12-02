@@ -1,4 +1,5 @@
 import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Tag from './Tag';
 
@@ -26,21 +27,32 @@ const Text = styled.p`
   margin: 0;
 `;
 
-const Card = ({ id, number, description = "", tags = [] }) => {
+const Card = ({ id, index, number, description = "", tags = [] }) => {
   return (
-  <CardContainer>
-    {
-      tags.length > 0 &&
-      <TagsContainer>
-      {
-        tags.map((tag, i) => (
-          <Tag key={i} text={tag} />
-        ))
-      }
-      </TagsContainer>
-    }
-    <Text>{'#' + number + ' ' + description}</Text>
-  </CardContainer>
+    <Draggable 
+      draggableId={id}
+      index={index}
+    >
+      {(provided) => (
+        <CardContainer
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          {
+            tags.length > 0 &&
+            <TagsContainer>
+            {
+              tags.map((tag, i) => (
+                <Tag key={i} text={tag} />
+              ))
+            }
+            </TagsContainer>
+          }
+          <Text>{'#' + number + ' ' + description}</Text>
+        </CardContainer>
+      )}
+    </Draggable>
   );
 };
 

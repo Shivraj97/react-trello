@@ -79,6 +79,7 @@ class Board extends Component {
     this.state = {
       lists: {},
       cards: {},
+      listOrder: [],
       newListText: '',
       creatingNewList: false,
       openMenuId: null,
@@ -101,7 +102,7 @@ class Board extends Component {
 
   componentWillMount() {
     // Init state with data
-    this.setState({ lists: data.lists, cards: data.cards });
+    this.setState({ lists: data.lists, cards: data.cards, listOrder: data.listOrder });
   }
 
   handleAddList(title) {
@@ -191,6 +192,7 @@ class Board extends Component {
   handleCopyList(listId) {
     let lists = {...this.state.lists};
     let cards = {...this.state.cards};
+    let listOrder = [...this.state.listOrder];
     let cardIds = [];
     // Copy all cards from list to copy
     for (let i = 0; i < lists[listId].cardIds.length; i++) {
@@ -203,8 +205,9 @@ class Board extends Component {
     // Copy list with Ids for the new copy cards
     const id = _generateID();
     lists[id] = { id, title: '(Copy) - ' + lists[listId].title, cardIds };
+    listOrder.push(id);
     // Update state
-    this.setState({ cards, lists, openMenuId: null });
+    this.setState({ cards, lists, listOrder, openMenuId: null });
   }
 
   handleMoveAllCards(listId) {
@@ -259,11 +262,10 @@ class Board extends Component {
   }
 
   renderLists() {
-    let lists = [];
-    for (const listId in this.state.lists) {
+    return this.state.listOrder.map(listId => {
       const list = this.state.lists[listId];
       const cards = list.cardIds.map(key => this.state.cards[key]);
-      lists.push(
+      return (
         <li key={list.id}>
           <CardList 
             id={list.id}
@@ -282,10 +284,9 @@ class Board extends Component {
             onRemoveTag={this.handleRemoveTag}
             onAddTag={this.handleAddTag}
           />
-        </li>
+      </li>
       );
-    }
-    return lists;
+    });
   }
 
   renderNewList() {

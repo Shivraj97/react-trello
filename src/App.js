@@ -1,4 +1,5 @@
 import React from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 // Components
 import Board from './components/Board';
 import Header from './components/Header';
@@ -7,10 +8,12 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Board />
-    </div>
+    <DragDropContext onDragEnd={() => null}>
+      <div className="App">
+        <Header />
+        <Board />
+      </div>
+    </DragDropContext>
   );
 }
 
