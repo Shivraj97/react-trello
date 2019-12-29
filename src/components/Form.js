@@ -16,6 +16,7 @@ const FormContainer = styled.form`
       default: return '250px';
     }
   }};
+  height: fit-content;
 `;
 
 const FormHeader = styled.div`

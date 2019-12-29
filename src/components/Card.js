@@ -19,12 +19,12 @@ const CardContainer = styled.div`
   }
 `;
 
-const TagsContainer = styled.div`
-  margin-bottom: 5px;
-`;
-
 const Text = styled.p`
   margin: 0;
+`;
+
+const TagsContainer = styled.div`
+  margin-bottom: 5px;
 `;
 
 const Card = ({ id, index, number, description = "", tags = [] }) => {

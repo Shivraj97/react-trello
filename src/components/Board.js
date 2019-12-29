@@ -30,6 +30,8 @@ const BoardContainer = styled.div`
   bottom: 0;
   left: 0;
   padding: 75px 10px 10px 10px;
+  overflow-y: hidden;
+  overflow-x: auto;
 `;
 
 const ListsContainer = styled.ol`
@@ -38,8 +40,6 @@ const ListsContainer = styled.ol`
   display: flex;
   flex-direction: row;
   margin: 0;
-  overflow-y: hidden;
-  overflow-x: auto;
 `;
 
 const NewList = styled.button`
@@ -162,7 +162,7 @@ class Board extends Component {
     // Delete list itself
     delete lists[listId];
     const index = listOrder.indexOf(listId);
-    if (index !== 1) {
+    if (index !== -1) {
       listOrder.splice(index, 1);
     }
     // Update state
@@ -297,48 +297,63 @@ class Board extends Component {
   }
 
   renderLists() {
-    return this.state.listOrder.map((listId, index) => {
-      const list = this.state.lists[listId];
-      const cards = list.cardIds.map(key => this.state.cards[key]);
-      return (
-        <li key={list.id}>
-          <CardList 
-            id={list.id}
-            index={index}
-            title={list.title}
-            cards={cards}
-            isMenuOpen={this.state.openMenuId === list.id}
-            onToggleMenu={this.handleToggleMenu}
-            onAddCard={this.handleAddCard}
-            onRemoveCard={this.handleRemoveCard}
-            onRemoveList={this.handleRemoveList}
-            onRemoveAllCards={this.handleRemoveAllCards}
-            onCopyList={this.handleCopyList}
-            onMoveAllCards={this.handleMoveAllCards}
-            onCopyCard={this.handleCopyCard}
-            onEditCard={this.handleEditCard}
-            onRemoveTag={this.handleRemoveTag}
-            onAddTag={this.handleAddTag}
-          />
-      </li>
-      );
-    });
+    return (
+      <Droppable 
+        droppableId="all-lists"
+        direction="horizontal"
+        type="list"
+      >
+        {(provided) => (
+          <ListsContainer
+            ref={provided.innerRef}
+            {...this.props.droppableProps}
+          >
+            { 
+              this.state.listOrder.map((listId, index) => {
+                const list = this.state.lists[listId];
+                const cards = list.cardIds.map(key => this.state.cards[key]);
+                return (
+                  <li key={list.id}>
+                    <CardList 
+                      id={list.id}
+                      index={index}
+                      title={list.title}
+                      cards={cards}
+                      isMenuOpen={this.state.openMenuId === list.id}
+                      onToggleMenu={this.handleToggleMenu}
+                      onAddCard={this.handleAddCard}
+                      onRemoveCard={this.handleRemoveCard}
+                      onRemoveList={this.handleRemoveList}
+                      onRemoveAllCards={this.handleRemoveAllCards}
+                      onCopyList={this.handleCopyList}
+                      onMoveAllCards={this.handleMoveAllCards}
+                      onCopyCard={this.handleCopyCard}
+                      onEditCard={this.handleEditCard}
+                      onRemoveTag={this.handleRemoveTag}
+                      onAddTag={this.handleAddTag}
+                    />
+                </li>
+                );
+              })
+            }
+            {provided.placeholder}
+          </ListsContainer>
+        )}
+      </Droppable>
+    );
   }
 
   renderNewList() {
     return (
       this.state.creatingNewList
-      ? <li>
-          <Form
-            type="list"
-            placeholder="Enter a title for this list..."
-            buttonText="Add List"
-            onClickSubmit={this.handleAddList}
-            onClickCancel={() => this.setState({ creatingNewList: false })}
-          />
-        </li>
-      : <li>
-        <NewList onClick={() => this.setState({ creatingNewList: true })}>
+      ? <Form
+          type="list"
+          placeholder="Enter a title for this list..."
+          buttonText="Add List"
+          onClickSubmit={this.handleAddList}
+          onClickCancel={() => this.setState({ creatingNewList: false })}
+        />
+      : <NewList onClick={() => this.setState({ creatingNewList: true })}>
           <AddIconStyled /> 
           { 
             this.state.lists.length === 0 
@@ -346,7 +361,6 @@ class Board extends Component {
             : <NewListText>Add another list</NewListText>
           }
         </NewList>
-      </li>
     );
   }
 
@@ -357,23 +371,10 @@ class Board extends Component {
         onDragStart={this.handleDragStart}
         onDragUpdate={this.handleDragUpdate}
       >
-        <Droppable 
-          droppableId="all-lists"
-          direction="horizontal"
-          type="list"
-        >
-          {(provided) => (
-            <BoardContainer
-              ref={provided.innerRef}
-              {...this.props.droppableProps}
-            >
-              <ListsContainer>
-                { this.renderLists() }
-                { this.renderNewList() }
-              </ListsContainer>
-            </BoardContainer>
-          )}
-        </Droppable>
+        <BoardContainer>
+          { this.renderLists() }
+          { this.renderNewList() }
+        </BoardContainer>
       </DragDropContext>
     );
   }
