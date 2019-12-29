@@ -3,44 +3,44 @@ const data = {
     "k9atfadyp": { 
       id: "k9atfadyp", 
       number: 1, 
-      description: "This is my first card...", 
-      tags: ["Priority: Low", "Front-end"] 
+      description: "Create reusable React components", 
+      tags: ["Priority: Medium", "React"] 
     },
     "8wu6w8mxg": { 
       id: "8wu6w8mxg", 
       number: 2, 
-      description: "This is a test", 
-      tags: ["Priority: Low"] 
+      description: "Learn React Hooks", 
+      tags: ["React", "Hooks"] 
     },
     "c96h9478v": { 
       id: "c96h9478v", 
       number: 3, 
-      description: "This is a test", 
-      tags: [] 
+      description: "Create Beautiful Drag and Drop Capability", 
+      tags: ["Priority: Low", "react-beautiful-dnd"]
     },
     "rtwf8u120": { 
       id: "rtwf8u120", 
       number: 4,
-      description: "A card for my second list", 
-      tags: ["Priority: Low", "Front-end"] 
+      description: "Learn React", 
+      tags: ["Priority: High", "React"] 
     },
     "vt6udjrpz": { 
       id: "vt6udjrpz", 
       number: 5, 
-      description: "Another one!", 
-      tags: ["Priority: Medium", "API", "Database"] 
+      description: "Write my first React component", 
+      tags: ["Priority: Medium"] 
     },
     "ftrch98nt": { 
       id: "ftrch98nt", 
       number: 6, 
-      description: "A card for my third list", 
-      tags: ["Priority: High", "Payment", "API"] 
+      description: "Create React App", 
+      tags: ["Priority: Medium", "create-react-app"] 
     },
     "bionb64f7": { 
       id: "bionb64f7", 
       number: 7, 
-      description: "Another one!", 
-      tags: [] 
+      description: "Write my first React component", 
+      tags: ["Priority: Medium"] 
     }
   },
   lists: {
