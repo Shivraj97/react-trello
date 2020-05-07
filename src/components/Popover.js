@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { useClickOutsideEffect } from '../hooks';
 import Divider from './Divider';
@@ -26,7 +26,7 @@ const PopoverTitle = styled.h4`
 `;
 
 const Popover = ({ title = "Title", children = null, onClickOutside = () => null, offset = {}}) => {
-  const popover = React.createRef();
+  const popover = useRef(null);
 
   useClickOutsideEffect(popover, onClickOutside);
 
