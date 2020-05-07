@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 export function useClickOutsideEffect(node, onClickOutside) {
-  function handleClick(e) {
+  const handleClick = useCallback((e) => {
     if (node.current && !node.current.contains(e.target) && typeof(onClickOutside) === "function") {
       onClickOutside();
     }
-  }
+  }, [node, onClickOutside]);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClick);
@@ -13,5 +13,5 @@ export function useClickOutsideEffect(node, onClickOutside) {
     return () => {
       document.removeEventListener('mousedown', handleClick);
     };
-  });
+  }, [handleClick]);
 };
